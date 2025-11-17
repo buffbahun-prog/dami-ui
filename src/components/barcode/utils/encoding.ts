@@ -16,11 +16,12 @@ enum Markers {
 }
 
 export type Digit = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9;
+export type BarcodeBit = 0 | 1;
 
 interface IMarkersEncode {
-    [Markers.Start]: (0 | 1)[];
-    [Markers.End]: (0 | 1)[];
-    [Markers.Center]: (0 | 1)[];
+    [Markers.Start]: BarcodeBit[];
+    [Markers.End]: BarcodeBit[];
+    [Markers.Center]: BarcodeBit[];
 }
 
 const markersBits: IMarkersEncode = {
@@ -35,9 +36,9 @@ interface IEncodeStruct {
 }
 
 interface IDigitEncode {
-    [EncodingType.L]: (0 | 1)[];
-    [EncodingType.G]: (0 | 1)[];
-    [EncodingType.R]: (0 | 1)[];
+    [EncodingType.L]: BarcodeBit[];
+    [EncodingType.G]: BarcodeBit[];
+    [EncodingType.R]: BarcodeBit[];
 }
 
 const encodeStruct: Record<Digit, IEncodeStruct> = {
@@ -110,7 +111,7 @@ export const ean13CalcChecksum = (digitList: Digit[]): Digit => {
     return (partialSum % 10 === 0) ? 0 : (10 - (partialSum % 10)) as Digit;
 }
 
-export const encodeEan13 = (digitList: Digit[]): (0 | 1)[] => {
+export const encodeEan13 = (digitList: Digit[]): BarcodeBit[] => {
     if (digitList.length !== 12) throw Error("12 digits required.");
     const checksum = ean13CalcChecksum(digitList);
     const firstDigit = digitList.shift();
@@ -140,4 +141,33 @@ export const encodeEan13 = (digitList: Digit[]): (0 | 1)[] => {
             ...lastGrpEncBitsAry,
             ...markersBits[Markers.End]
            ];
+}
+
+// transform bar bits to bar widths
+export const bitMapTransform = (bits: BarcodeBit[]): number[] => {
+    if (bits.length <= 0) return [];
+    const mappedAry: number[] = [0];
+    let currCmpBit = bits[0];
+    for (let i = 0; i < bits.length; i++) {
+        if (currCmpBit === bits[i]) {
+            mappedAry[mappedAry.length - 1]++;
+        } else {
+            mappedAry[mappedAry.length - 1] = currCmpBit === 1 ? mappedAry[mappedAry.length - 1] : -(mappedAry[mappedAry.length - 1]);
+            currCmpBit = bits[i];
+            mappedAry.push(1);
+        }
+    }
+    mappedAry[mappedAry.length - 1] = currCmpBit === 1 ? mappedAry[mappedAry.length - 1] : -(mappedAry[mappedAry.length - 1]);
+    return mappedAry;
+}
+
+export const getEan13LongTailPos = (): number[] => {
+    const markerStartLen = markersBits[Markers.Start].length;
+    const markerCenterLen = markersBits[Markers.Center].length;
+    const encBitsLen = (encodeStruct[0].firstGroup.length * digitEncode[0][EncodingType.L].length);
+    return [
+        ...(markersBits[Markers.Start].map((_, indx) => indx)),
+        ...(markersBits[Markers.Center].map((_, indx) => markerStartLen + encBitsLen + indx)),
+        ...(markersBits[Markers.End].map((_, indx) => markerStartLen + (encBitsLen * 2) + markerCenterLen + indx)),
+    ];
 }
