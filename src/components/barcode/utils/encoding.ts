@@ -84,6 +84,11 @@ const encodeStruct: Record<Digit, IEncodeStruct> = {
     },
 }
 
+const ean8EncodeStruct: IEncodeStruct = {
+    firstGroup: [EncodingType.L, EncodingType.L, EncodingType.L, EncodingType.L],
+    lastGroup: [EncodingType.R, EncodingType.R, EncodingType.R, EncodingType.R]
+}
+
 const digitEncode: Record<Digit, IDigitEncode> = {
     0: {[EncodingType.L]: [0,0,0,1,1,0,1], [EncodingType.G]: [0,1,0,0,1,1,1], [EncodingType.R]: [1,1,1,0,0,1,0]},
     1: {[EncodingType.L]: [0,0,1,1,0,0,1], [EncodingType.G]: [0,1,1,0,0,1,1], [EncodingType.R]: [1,1,0,0,1,1,0]},
@@ -112,7 +117,7 @@ export const ean13CalcChecksum = (digitList: Digit[]): Digit => {
 }
 
 export const encodeEan13 = (digitList: Digit[]): BarcodeBit[] => {
-    if (digitList.length !== 12) throw Error("12 digits required.");
+    if (digitList.length !== 12) throw Error("12 digits required for EAN-13.");
     const checksum = ean13CalcChecksum(digitList);
     const firstDigit = digitList.shift();
     if (firstDigit === undefined) return [];
@@ -121,6 +126,38 @@ export const encodeEan13 = (digitList: Digit[]): BarcodeBit[] => {
 
     const firstDigitGrp = digitList.slice(0, 6);
     const lastDigitGrp = digitList.slice(6,12);
+    
+    const firstGrpEncBitsAry: (0 | 1)[] = [];
+    const lastGrpEncBitsAry: (0 | 1)[] = [];
+    for (let indx = 0; indx < encodeStructure.firstGroup.length; indx++) {
+        const firstGrpEncType = encodeStructure.firstGroup[indx];
+        const lastGrpEncType = encodeStructure.lastGroup[indx];
+
+        const encBitsFirst = digitEncode[firstDigitGrp[indx]][firstGrpEncType];
+        firstGrpEncBitsAry.push(...encBitsFirst);
+
+        const encBitsLast = digitEncode[lastDigitGrp[indx]][lastGrpEncType];
+        lastGrpEncBitsAry.push(...encBitsLast);
+    }
+
+    return [...markersBits[Markers.Start],
+            ...firstGrpEncBitsAry,
+            ...markersBits[Markers.Center],
+            ...lastGrpEncBitsAry,
+            ...markersBits[Markers.End]
+           ];
+}
+
+export const encodeEan8 = (digitList: Digit[]): BarcodeBit[] => {
+    if (digitList.length !== 7) throw Error("7 digits required for EAN-8.");
+    const checksum = ean13CalcChecksum(digitList);
+    // const firstDigit = digitList.shift();
+    // if (firstDigit === undefined) return [];
+    digitList.push(checksum);
+    const encodeStructure = ean8EncodeStruct;
+
+    const firstDigitGrp = digitList.slice(0, 4);
+    const lastDigitGrp = digitList.slice(4,12);
     
     const firstGrpEncBitsAry: (0 | 1)[] = [];
     const lastGrpEncBitsAry: (0 | 1)[] = [];
@@ -165,6 +202,17 @@ export const getEan13LongTailPos = (): number[] => {
     const markerStartLen = markersBits[Markers.Start].length;
     const markerCenterLen = markersBits[Markers.Center].length;
     const encBitsLen = (encodeStruct[0].firstGroup.length * digitEncode[0][EncodingType.L].length);
+    return [
+        ...(markersBits[Markers.Start].map((_, indx) => indx)),
+        ...(markersBits[Markers.Center].map((_, indx) => markerStartLen + encBitsLen + indx)),
+        ...(markersBits[Markers.End].map((_, indx) => markerStartLen + (encBitsLen * 2) + markerCenterLen + indx)),
+    ];
+}
+
+export const getEan8LongTailPos = (): number[] => {
+    const markerStartLen = markersBits[Markers.Start].length;
+    const markerCenterLen = markersBits[Markers.Center].length;
+    const encBitsLen = (ean8EncodeStruct.firstGroup.length * digitEncode[0][EncodingType.L].length);
     return [
         ...(markersBits[Markers.Start].map((_, indx) => indx)),
         ...(markersBits[Markers.Center].map((_, indx) => markerStartLen + encBitsLen + indx)),

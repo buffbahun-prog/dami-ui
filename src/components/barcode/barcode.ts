@@ -1,5 +1,5 @@
 import templateHTML from "./barcode.html?raw";
-import { BarcodeBit, Digit, bitMapTransform, encodeEan13, getEan13LongTailPos } from "./utils/encoding";
+import { BarcodeBit, Digit, bitMapTransform, encodeEan13, encodeEan8, getEan13LongTailPos, getEan8LongTailPos } from "./utils/encoding";
 
 type BarcodeType = "ean13" | "ean8";
 
@@ -68,6 +68,13 @@ class Barcode extends HTMLElement {
                                     map(dgStr => parseInt(dgStr)).
                                     filter(dg => !isNaN(dg)) as Digit[];
                 return [encodeEan13(digitValue), getEan13LongTailPos()];
+            } else if (type === "ean8") {
+                const regex = /^\d{7}$/;
+                if (value === null || !regex.test(value.trim())) throw Error("7 digits required.");
+                const digitValue = value.trim().split("").
+                                    map(dgStr => parseInt(dgStr)).
+                                    filter(dg => !isNaN(dg)) as Digit[];
+                return [encodeEan8(digitValue), getEan8LongTailPos()];
             } else {
               throw Error("Give proper barcode type and its respective value to encode");   
             }
