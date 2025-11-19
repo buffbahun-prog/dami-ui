@@ -1,12 +1,6 @@
 import templateHTML from "./barcode.html?raw";
-import { BarcodeBit, Digit, bitMapTransform, encodeEan13, encodeEan8, getEan13LongTailPos, getEan8LongTailPos } from "./utils/encoding";
-
-type BarcodeType = "ean13" | "ean8";
-
-interface IBarcodeAttr {
-    type: BarcodeType | null;
-    value: string | null;
-}
+import { IBarcodeAttr } from "./barcode.types";
+import { BarcodeBit, Digit, bitMapTransform, encodeEan13, encodeEan8, encodeUpca, encodeUpce, getEan13LongTailPos, getEan8LongTailPos, getUpcaLongTailPos, getUpceLongTailPos } from "./utils/encoding";
 
 const template = document.createElement("template");
 template.innerHTML = templateHTML;
@@ -75,6 +69,20 @@ class Barcode extends HTMLElement {
                                     map(dgStr => parseInt(dgStr)).
                                     filter(dg => !isNaN(dg)) as Digit[];
                 return [encodeEan8(digitValue), getEan8LongTailPos()];
+            } else if (type === "upca") {
+                const regex = /^\d{11}$/;
+                if (value === null || !regex.test(value.trim())) throw Error("11 digits required.");
+                const digitValue = value.trim().split("").
+                                    map(dgStr => parseInt(dgStr)).
+                                    filter(dg => !isNaN(dg)) as Digit[];
+                return [encodeUpca(digitValue), getUpcaLongTailPos()];
+            } else if (type === "upce") {
+                const regex = /^\d{6}$/;
+                if (value === null || !regex.test(value.trim())) throw Error("6 digits required.");
+                const digitValue = value.trim().split("").
+                                    map(dgStr => parseInt(dgStr)).
+                                    filter(dg => !isNaN(dg)) as Digit[];
+                return [encodeUpce(digitValue), getUpceLongTailPos()];
             } else {
               throw Error("Give proper barcode type and its respective value to encode");   
             }
