@@ -1,6 +1,6 @@
 import templateHTML from "./barcode.html?raw";
 import { IBarcodeAttr } from "./barcode.types";
-import { BarcodeBit, Digit, bitMapTransform, encodeEan13, encodeEan8, encodeUpca, encodeUpce, getEan13LongTailPos, getEan8LongTailPos, getUpcaLongTailPos, getUpceLongTailPos } from "./utils/encoding";
+import { BarcodeBit, Code11Digit, Digit, bitMapTransform, encodeCode11, encodeCode39, encodeEan13, encodeEan8, encodeUpca, encodeUpce, getEan13LongTailPos, getEan8LongTailPos, getUpcaLongTailPos, getUpceLongTailPos, isValidCode11, isValidCode39, mapValueToCode39Digits } from "./utils/encoding";
 
 const template = document.createElement("template");
 template.innerHTML = templateHTML;
@@ -83,6 +83,18 @@ class Barcode extends HTMLElement {
                                     map(dgStr => parseInt(dgStr)).
                                     filter(dg => !isNaN(dg)) as Digit[];
                 return [encodeUpce(digitValue), getUpceLongTailPos()];
+            } else if (type === "code11") {
+                const [isValid, message] = isValidCode11(value);
+                if (value === null || !isValid) throw Error(message);
+                const digitValue = value.trim().split("").
+                                    map(dgStr => dgStr === "-" ? 10 : parseInt(dgStr)).
+                                    filter(dg => !isNaN(dg)) as Code11Digit[];
+                return [encodeCode11(digitValue), []];
+            } else if (type === "code39") {
+                const [isValid, message] = isValidCode39(value);
+                if (value === null || !isValid) throw Error(message);
+                const digitValue = mapValueToCode39Digits(value);
+                return [encodeCode39(digitValue), []];
             } else {
               throw Error("Give proper barcode type and its respective value to encode");   
             }
