@@ -21,6 +21,7 @@ enum Markers {
     UpceEnd = 3,
     Code11StartEnd = 4,
     Code39StartEnd = 5,
+    Code93StartEnd = 6,
 }
 
 enum BarType {
@@ -41,6 +42,7 @@ interface IMarkersEncode {
     [Markers.UpceEnd]: BarcodeBit[];
     [Markers.Code11StartEnd]: BarcodeBit[];
     [Markers.Code39StartEnd]: BarcodeBit[];
+    [Markers.Code93StartEnd]: BarcodeBit[];
 }
 
 const markersBits: IMarkersEncode = {
@@ -50,6 +52,7 @@ const markersBits: IMarkersEncode = {
     [Markers.UpceEnd]: [0,1,0,1,0,1],
     [Markers.Code11StartEnd]: [1,0,1,1,0,0,1],
     [Markers.Code39StartEnd]: [1,0,0,1,0,1,1,0,1,1,0,1],
+    [Markers.Code93StartEnd]: [1,0,1,0,1,1,1,1,0],
 }
 
 interface IEncodeStruct {
@@ -170,6 +173,56 @@ const code11Encode: Record<Code11Digit, BarcodeBit[]> = {
     9: [1,1,0,1,0,1,],
     10: [1,0,1,1,0,1],
 }
+
+export const code93Encode: Record<number, BarcodeBit[]> = {
+    0: [1,0,0,0,1,0,1,0,0],
+    1: [1,0,1,0,0,1,0,0,0],
+    2: [1,0,1,0,0,0,1,0,0],
+    3: [1,0,1,0,0,0,0,1,0],
+    4: [1,0,0,1,0,1,0,0,0],
+    5: [1,0,0,1,0,0,1,0,0],
+    6: [1,0,0,1,0,0,0,1,0],
+    7: [1,0,1,0,1,0,0,0,0],
+    8: [1,0,0,0,1,0,0,1,0],
+    9: [1,0,0,0,0,1,0,1,0],
+    10: [1,1,0,1,0,1,0,0,0],
+    11: [1,1,0,1,0,0,1,0,0],
+    12: [1,1,0,1,0,0,0,1,0],
+    13: [1,1,0,0,1,0,1,0,0],
+    14: [1,1,0,0,1,0,0,1,0],
+    15: [1,1,0,0,0,1,0,1,0],
+    16: [1,0,1,1,0,1,0,0,0],
+    17: [1,0,1,1,0,0,1,0,0],
+    18: [1,0,1,1,0,0,0,1,0],
+    19: [1,0,0,1,1,0,1,0,0],
+    20: [1,0,0,0,1,1,0,1,0],
+    21: [1,0,1,0,1,1,0,0,0],
+    22: [1,0,1,0,0,1,1,0,0],
+    23: [1,0,1,0,0,0,1,1,0],
+    24: [1,0,0,1,0,1,1,0,0],
+    25: [1,0,0,0,1,0,1,1,0],
+    26: [1,1,0,1,1,0,1,0,0],
+    27: [1,1,0,1,1,0,0,1,0],
+    28: [1,1,0,1,0,1,1,0,0],
+    29: [1,1,0,1,0,0,1,1,0],
+    30: [1,1,0,0,1,0,1,1,0],
+    31: [1,1,0,0,1,1,0,1,0],
+    32: [1,0,1,1,0,1,1,0,0],
+    33: [1,0,1,1,0,0,1,1,0],
+    34: [1,0,0,1,1,0,1,1,0],
+    35: [1,0,0,1,1,1,0,1,0],
+    36: [1,0,0,1,0,1,1,1,0],
+    37: [1,1,1,0,1,0,1,0,0],
+    38: [1,1,1,0,1,0,0,1,0],
+    39: [1,1,1,0,0,1,0,1,0],
+    40: [1,0,1,1,0,1,1,1,0],
+    41: [1,0,1,1,1,0,1,1,0],
+    42: [1,1,0,1,0,1,1,1,0],
+    43: [1,0,0,1,0,0,1,1,0],
+    44: [1,1,1,0,1,1,0,1,0],
+    45: [1,1,1,0,1,0,1,1,0],
+    46: [1,0,0,1,1,0,0,1,0],
+  };
 
 export const ean13CalcChecksum = (digitList: Digit[]): Digit => {
     digitList = digitList.toReversed();
@@ -335,9 +388,34 @@ export const encodeUpce = (digitList: Digit[]): BarcodeBit[] => {
            ];
 }
 
-export const mapValueToCode39Digits = (valueStr: string): number[] => {
+export const mapValueToCode39Or93Digits = (valueStr: string, isCode93: boolean = false): number[] => {
     const digitList: number[] = [];
-    for (let char of valueStr) {
+    let isOnSpecialChar = false;
+    for (const [index, char] of [...valueStr].entries()) {
+        if (isCode93) {
+            const specialChar = valueStr.slice(index, index + 3);
+            if (specialChar === "($)") {
+                digitList.push(43);
+                isOnSpecialChar = true;
+            } else if (specialChar === "(%)") {
+                digitList.push(44);
+                isOnSpecialChar = true;
+            } else if (specialChar === "(/)") {
+                digitList.push(45);
+                isOnSpecialChar = true;
+            } else if (specialChar === "(+)") {
+                digitList.push(46);
+                isOnSpecialChar = true;
+            }
+        }
+
+        if (isOnSpecialChar) {
+            if (char === ")") {
+                isOnSpecialChar = false;
+            }
+            continue;
+        }
+
         const charCode = char.charCodeAt(0);
         if (isNaN(charCode)) return [];
         if (charCode >= 48 && charCode <= 57) {
@@ -399,6 +477,80 @@ const encodeCharCode39 = (char: number): BarType[] => {
     });
 }
 
+export const code39Or93ExtendedNormalize = (valueStr: string, is93Extended = false): string => {
+    const encodeAry: string[] = [];
+    if (valueStr === "") {
+        encodeAry.push(is93Extended ? "(%)" : "%", "U");
+    }
+    for (let char of valueStr) {
+        const charCode = char.charCodeAt(0);
+        if (isNaN(charCode)) return "";
+        if (charCode >= 48 && charCode <= 57) {
+            encodeAry.push(char);
+        } else if (charCode >= 65 && charCode <= 90) {
+            encodeAry.push(char);
+        } else if (charCode >= 97 && charCode <= 122) {
+            encodeAry.push(is93Extended ? "(+)" : "+",String.fromCharCode(charCode - 32));
+        } else if (char === "!") {
+            encodeAry.push(is93Extended ? "(/)" : "/", "A");
+        } else if (char === "\"") {
+            encodeAry.push(is93Extended ? "(/)" : "/", "B");
+        } else if (char === "#") {
+            encodeAry.push(is93Extended ? "(/)" : "/", "C");
+        } else if (char === "&") {
+            encodeAry.push(is93Extended ? "(/)" : "/", "F");
+        } else if (char === "'") {
+            encodeAry.push(is93Extended ? "(/)" : "/", "G");
+        } else if (char === "(") {
+            encodeAry.push(is93Extended ? "(/)" : "/", "H");
+        } else if (char === ")") {
+            encodeAry.push(is93Extended ? "(/)" : "/", "I");
+        } else if (char === "*") {
+            encodeAry.push(is93Extended ? "(/)" : "/", "J");
+        } else if (char === ",") {
+            encodeAry.push(is93Extended ? "(/)" : "/", "L");
+        } else if (char === ":") {
+            encodeAry.push(is93Extended ? "(/)" : "/", "Z");
+        } else if (char === ";") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "F");
+        } else if (char === "<") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "G");
+        } else if (char === "=") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "H");
+        } else if (char === ">") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "I");
+        } else if (char === "?") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "J");
+        } else if (char === "@") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "V");
+        } else if (char === "[") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "K");
+        } else if (char === "\\") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "L");
+        } else if (char === "]") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "M");
+        } else if (char === "^") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "N");
+        } else if (char === "_") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "O");
+        } else if (char === "`") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "W");
+        } else if (char === "{") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "P");
+        } else if (char === "|") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "Q");
+        } else if (char === "}") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "R");
+        } else if (char === "~") {
+            encodeAry.push(is93Extended ? "(%)" : "%", "S");
+        } else {
+            encodeAry.push(char);
+        }
+    }
+
+    return encodeAry.join("");
+}
+
 export const encodeCode39 = (digitList: number[]): BarcodeBit[] => {
     if (digitList.length <= 0) throw Error("Atleat one value is required for Code-39");
     const checksumVal = calcCode39Checksum(digitList);
@@ -420,6 +572,42 @@ export const encodeCode39 = (digitList: number[]): BarcodeBit[] => {
     return [...markersBits[Markers.Code39StartEnd],
             ...encodeBitAry,
             ...markersBits[Markers.Code39StartEnd],
+           ];
+}
+
+export const calcCode93Checksum = (digitList: number[]): number[] => {
+    digitList = digitList.toReversed();
+    const repeatorModulo = [20, 15];
+    const checkSum: number[] = [];
+    for (const modulo of repeatorModulo) {
+        let partialSum = 0;
+        for (let indx = 0; indx < digitList.length; indx++) {
+            const pos = (indx % modulo) + 1;
+            const digit = digitList[indx];
+            partialSum += (digit * pos);
+        }
+        const ck = (partialSum % 47);
+        checkSum.push(ck);
+        digitList.unshift(ck);
+    }
+    return checkSum;
+}
+
+export const encodeCode93 = (digitList: number[]): BarcodeBit[] => {
+    if (digitList.length <= 0) throw Error("Atleat one value is required for Code-93");
+    const checksumVal: number[] = calcCode93Checksum(digitList);
+    digitList.push(...checksumVal);
+
+    const encodeBitAry: BarcodeBit[] = [];
+    for (const digit of digitList) {
+        const bitAry = code93Encode[digit];
+        encodeBitAry.push(...bitAry);
+    }
+
+    return [...markersBits[Markers.Code93StartEnd],
+            ...encodeBitAry,
+            ...markersBits[Markers.Code93StartEnd],
+            1,
            ];
 }
 
@@ -527,7 +715,7 @@ export const isValidCode11 = (value: string | null): [boolean, string] => {
     return [true, ""];
 }
 
-export const isValidCode39 = (value: string | null): [boolean, string] => {
+export const isValidCode39Or93 = (value: string | null): [boolean, string] => {
     if (value !== null) value = value.trim();
     // Must be non-empty
     if (!value || value.length === 0) return [false, "Value must be non-empty."];
@@ -535,6 +723,49 @@ export const isValidCode39 = (value: string | null): [boolean, string] => {
     if (value !== value.toUpperCase()) return [false, "Value must be uppercase only."]
   
     if (!/^[A-Z0-9.\- $/+%]+$/.test(value)) return [false, "Only Uppercase albhabets, digits and characters(.,/,[space],$,-,+,%) are allowed."];
+  
+    return [true, ""];
+}
+
+export const isValidCode93 = (value: string | null): [boolean, string] => {
+    if (value !== null) value = value.trim();
+    // Must be non-empty
+    if (!value || value.length === 0) return [false, "Value must be non-empty."];
+
+    if (value !== value.toUpperCase()) return [false, "Value must be uppercase only."]
+  
+    // if (!/^(?:[A-Z0-9.\- $\/+%]|\(\$\)|\(/\)|\(\+\)|\(%\))+$/.test(value)) return [false, "Only Uppercase albhabets, digits and characters(.,/,[space],$,-,+,%) are allowed."];
+    const singleCharSet = new Set([
+        ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ',
+        ...'0123456789',
+        '-', '.', ' ', '$', '/', '+', '%',
+    ]);
+
+    const specialCharSet = new Set([
+        '($)','(/)', '(+)', '(%)',
+    ]);
+
+    const message = "Only Uppercase albhabets, digits, characters(.,/,[space],$,-,+,%) and special characters(($) ,(/) ,(+) ,(%)) are allowed.";
+    let specialCharacterCount = 0;
+    for (const [index, char] of [...value].entries()) {
+        if (specialCharacterCount > 0) {
+            specialCharacterCount--;
+            continue;
+        }
+        if (char === '(') {
+            const specialChar = value.slice(index, index + 3);
+            if (!specialCharSet.has(specialChar)) return [false, message];
+            specialCharacterCount = 3;
+            specialCharacterCount--;
+            continue;
+        }
+        if (char === ')') {
+            return [false, message];
+        }
+        if (!singleCharSet.has(char)) {
+            return [false, message];
+        }
+    }
   
     return [true, ""];
 }

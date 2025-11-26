@@ -1,6 +1,6 @@
 import templateHTML from "./barcode.html?raw";
 import { IBarcodeAttr } from "./barcode.types";
-import { BarcodeBit, Code11Digit, Digit, bitMapTransform, encodeCode11, encodeCode39, encodeEan13, encodeEan8, encodeUpca, encodeUpce, getEan13LongTailPos, getEan8LongTailPos, getUpcaLongTailPos, getUpceLongTailPos, isValidCode11, isValidCode39, mapValueToCode39Digits } from "./utils/encoding";
+import { BarcodeBit, Code11Digit, Digit, bitMapTransform, code39Or93ExtendedNormalize, encodeCode11, encodeCode39, encodeCode93, encodeEan13, encodeEan8, encodeUpca, encodeUpce, getEan13LongTailPos, getEan8LongTailPos, getUpcaLongTailPos, getUpceLongTailPos, isValidCode11, isValidCode39Or93, isValidCode93, mapValueToCode39Or93Digits } from "./utils/encoding";
 
 const template = document.createElement("template");
 template.innerHTML = templateHTML;
@@ -91,10 +91,27 @@ class Barcode extends HTMLElement {
                                     filter(dg => !isNaN(dg)) as Code11Digit[];
                 return [encodeCode11(digitValue), []];
             } else if (type === "code39") {
-                const [isValid, message] = isValidCode39(value);
+                const [isValid, message] = isValidCode39Or93(value);
                 if (value === null || !isValid) throw Error(message);
-                const digitValue = mapValueToCode39Digits(value);
+                const digitValue = mapValueToCode39Or93Digits(value);
                 return [encodeCode39(digitValue), []];
+            } else if (type === "code39Extended") {
+                const isValid = /^[\x00-\x7F]*$/.test(value ?? "");
+                if (!isValid) throw Error("Only ASCII characters are allowed for code-39 (extended)");
+                const mappedValue = code39Or93ExtendedNormalize(value ?? "");
+                const digitValue = mapValueToCode39Or93Digits(mappedValue);
+                return [encodeCode39(digitValue), []];
+            } else if (type === "code93") {
+                const [isValid, message] = isValidCode39Or93(value);
+                if (value === null || !isValid) throw Error(message);
+                const digitValue = mapValueToCode39Or93Digits(value, true);
+                return [encodeCode93(digitValue), []];
+            } else if (type === "code93Extended") {
+                const isValid = /^[\x00-\x7F]*$/.test(value ?? "");
+                if (!isValid) throw Error("Only ASCII characters are allowed for code-93 (extended)");
+                const mappedValue = code39Or93ExtendedNormalize(value ?? "", true);
+                const digitValue = mapValueToCode39Or93Digits(mappedValue, true);
+                return [encodeCode93(digitValue), []];
             } else {
               throw Error("Give proper barcode type and its respective value to encode");   
             }
