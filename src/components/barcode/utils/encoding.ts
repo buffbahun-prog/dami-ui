@@ -222,7 +222,389 @@ export const code93Encode: Record<number, BarcodeBit[]> = {
     44: [1,1,1,0,1,1,0,1,0],
     45: [1,1,1,0,1,0,1,1,0],
     46: [1,0,0,1,1,0,0,1,0],
+};
+
+export const code128Encode: Record<number, BarcodeBit[]> = {
+    0: [1,1,0,1,1,0,0,1,1,0,0],
+    1: [1,1,0,0,1,1,0,1,1,0,0],
+    2: [1,1,0,0,1,1,0,0,1,1,0],
+    3: [1,0,0,1,0,0,1,1,0,0,0],
+    4: [1,0,0,1,0,0,0,1,1,0,0],
+    5: [1,0,0,0,1,0,0,1,1,0,0],
+    6: [1,0,0,1,1,0,0,1,0,0,0],
+    7: [1,0,0,1,1,0,0,0,1,0,0],
+    8: [1,0,0,0,1,1,0,0,1,0,0],
+    9: [1,1,0,0,1,0,0,1,0,0,0],
+    10: [1,1,0,0,1,0,0,0,1,0,0],
+    11: [1,1,0,0,0,1,0,0,1,0,0],
+    12: [1,0,1,1,0,0,1,1,1,0,0],
+    13: [1,0,0,1,1,0,1,1,1,0,0],
+    14: [1,0,0,1,1,0,0,1,1,1,0],
+    15: [1,0,1,1,1,0,0,1,1,0,0],
+    16: [1,0,0,1,1,1,0,1,1,0,0],
+    17: [1,0,0,1,1,1,0,0,1,1,0],
+    18: [1,1,0,0,1,1,1,0,0,1,0],
+    19: [1,1,0,0,1,0,1,1,1,0,0],
+    20: [1,1,0,0,1,0,0,1,1,1,0],
+    21: [1,1,0,1,1,1,0,0,1,0,0],
+    22: [1,1,0,0,1,1,1,0,1,0,0],
+    23: [1,1,1,0,1,1,0,1,1,1,0],
+    24: [1,1,1,0,1,0,0,1,1,0,0],
+    25: [1,1,1,0,0,1,0,1,1,0,0],
+    26: [1,1,1,0,0,1,0,0,1,1,0],
+    27: [1,1,1,0,1,1,0,0,1,0,0],
+    28: [1,1,1,0,0,1,1,0,1,0,0],
+    29: [1,1,1,0,0,1,1,0,0,1,0],
+    30: [1,1,0,1,1,0,1,1,0,0,0],
+    31: [1,1,0,1,1,0,0,0,1,1,0],
+    32: [1,1,0,0,0,1,1,0,1,1,0],
+    33: [1,0,1,0,0,0,1,1,0,0,0],
+    34: [1,0,0,0,1,0,1,1,0,0,0],
+    35: [1,0,0,0,1,0,0,0,1,1,0],
+    36: [1,0,1,1,0,0,0,1,0,0,0],
+    37: [1,0,0,0,1,1,0,1,0,0,0],
+    38: [1,0,0,0,1,1,0,0,0,1,0],
+    39: [1,1,0,1,0,0,0,1,0,0,0],
+    40: [1,1,0,0,0,1,0,1,0,0,0],
+    41: [1,1,0,0,0,1,0,0,0,1,0],
+    42: [1,0,1,1,0,1,1,1,0,0,0],
+    43: [1,0,1,1,0,0,0,1,1,1,0],
+    44: [1,0,0,0,1,1,0,1,1,1,0],
+    45: [1,0,1,1,1,0,1,1,0,0,0],
+    46: [1,0,1,1,1,0,0,0,1,1,0],
+    47: [1,0,0,0,1,1,1,0,1,1,0],
+    48: [1,1,1,0,1,1,1,0,1,1,0],
+    49: [1,1,0,1,0,0,0,1,1,1,0],
+    50: [1,1,0,0,0,1,0,1,1,1,0],
+    51: [1,1,0,1,1,1,0,1,0,0,0],
+    52: [1,1,0,1,1,1,0,0,0,1,0],
+    53: [1,1,0,1,1,1,0,1,1,1,0],
+    54: [1,1,1,0,1,0,1,1,0,0,0],
+    55: [1,1,1,0,1,0,0,0,1,1,0],
+    56: [1,1,1,0,0,0,1,0,1,1,0],
+    57: [1,1,1,0,1,1,0,1,0,0,0],
+    58: [1,1,1,0,1,1,0,0,0,1,0],
+    59: [1,1,1,0,0,0,1,1,0,1,0],
+    60: [1,1,1,0,1,1,1,1,0,1,0],
+    61: [1,1,0,0,1,0,0,0,0,1,0],
+    62: [1,1,1,1,0,0,0,1,0,1,0],
+    63: [1,0,1,0,0,1,1,0,0,0,0],
+    64: [1,0,1,0,0,0,0,1,1,0,0],
+    65: [1,0,0,1,0,1,1,0,0,0,0],
+    66: [1,0,0,1,0,0,0,0,1,1,0],
+    67: [1,0,0,0,0,1,0,1,1,0,0],
+    68: [1,0,0,0,0,1,0,0,1,1,0],
+    69: [1,0,1,1,0,0,1,0,0,0,0],
+    70: [1,0,1,1,0,0,0,0,1,0,0],
+    71: [1,0,0,1,1,0,1,0,0,0,0],
+    72: [1,0,0,1,1,0,0,0,0,1,0],
+    73: [1,0,0,0,0,1,1,0,1,0,0],
+    74: [1,0,0,0,0,1,1,0,0,1,0],
+    75: [1,1,0,0,0,0,1,0,0,1,0],
+    76: [1,1,0,0,1,0,1,0,0,0,0],
+    77: [1,1,1,1,0,1,1,1,0,1,0],
+    78: [1,1,0,0,0,0,1,0,1,0,0],
+    79: [1,0,0,0,1,1,1,1,0,1,0],
+    80: [1,0,1,0,0,1,1,1,1,0,0],
+    81: [1,0,0,1,0,1,1,1,1,0,0],
+    82: [1,0,0,1,0,0,1,1,1,1,0],
+    83: [1,0,1,1,1,1,0,0,1,0,0],
+    84: [1,0,0,1,1,1,1,0,1,0,0],
+    85: [1,0,0,1,1,1,1,0,0,1,0],
+    86: [1,1,1,1,0,1,0,0,1,0,0],
+    87: [1,1,1,1,0,0,1,0,1,0,0],
+    88: [1,1,1,1,0,0,1,0,0,1,0],
+    89: [1,1,0,1,1,0,1,1,1,1,0],
+    90: [1,1,0,1,1,1,1,0,1,1,0],
+    91: [1,1,1,1,0,1,1,0,1,1,0],
+    92: [1,0,1,0,1,1,1,1,0,0,0],
+    93: [1,0,1,0,0,0,1,1,1,1,0],
+    94: [1,0,0,0,1,0,1,1,1,1,0],
+    95: [1,0,1,1,1,1,0,1,0,0,0],
+    96: [1,0,1,1,1,1,0,0,0,1,0],
+    97: [1,1,1,1,0,1,0,1,0,0,0],
+    98: [1,1,1,1,0,1,0,0,0,1,0],
+    99: [1,0,1,1,1,0,1,1,1,1,0], // Code C
+    100: [1,0,1,1,1,1,0,1,1,1,0],// Code B, FNC 4
+    101: [1,1,1,0,1,0,1,1,1,1,0],// Code A
+    102: [1,1,1,1,0,1,0,1,1,1,0],// FNC 1
+    103: [1,1,0,1,0,0,0,0,1,0,0],// Start Code A
+    104: [1,1,0,1,0,0,1,0,0,0,0],// Start Code B
+    105: [1,1,0,1,0,0,1,1,1,0,0],// Start Code C
+    106: [1,1,0,0,0,1,1,1,0,1,0],// Stop
+}
+
+export interface AIDef {
+    fixed: boolean;
+    length?: number;
+    min?: number;
+    max?: number;
+    format: "numeric" | "alphanumeric";
+    title: string;
+  }
+  
+  export const GS1_AI_REGISTRY: Record<string, AIDef> = {
+    // ---------------------------
+    // 0–19 IDENTIFICATION
+    // ---------------------------
+    "00": { fixed: true, length: 18, format: "numeric", title: "SSCC" },
+    "01": { fixed: true, length: 14, format: "numeric", title: "GTIN" },
+    "02": { fixed: true, length: 14, format: "numeric", title: "GTIN of Contained Trade Items" },
+    "10": { fixed: false, min: 1, max: 20, format: "alphanumeric", title: "Batch/Lot Number" },
+    "11": { fixed: true, length: 6, format: "numeric", title: "Production Date" },
+    "12": { fixed: true, length: 6, format: "numeric", title: "Due Date" },
+    "13": { fixed: true, length: 6, format: "numeric", title: "Packaging Date" },
+    "15": { fixed: true, length: 6, format: "numeric", title: "Best Before Date" },
+    "16": { fixed: true, length: 6, format: "numeric", title: "Sell By Date" },
+    "17": { fixed: true, length: 6, format: "numeric", title: "Expiration Date" },
+    "20": { fixed: true, length: 2, format: "numeric", title: "Variant" },
+    "21": { fixed: false, min: 1, max: 20, format: "alphanumeric", title: "Serial Number" },
+    "22": { fixed: false, min: 1, max: 29, format: "alphanumeric", title: "Consumer Product Variant" },
+    "23": { fixed: false, min: 1, max: 29, format: "alphanumeric", title: "Lot/Batch Subdivision" },
+    "240": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Additional Product ID" },
+    "241": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Customer Part Number" },
+    "242": { fixed: false, min: 1, max: 6, format: "numeric", title: "Made-to-order Number" },
+    "243": { fixed: false, min: 1, max: 20, format: "alphanumeric", title: "Packaging Component Number" },
+    "250": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Secondary Serial Number" },
+    "251": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Reference to Source Entity" },
+    "253": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "GDTI" },
+    "254": { fixed: false, min: 1, max: 20, format: "alphanumeric", title: "GLN Extension" },
+    "255": { fixed: false, min: 1, max: 13, format: "numeric", title: "GCN" },
+  
+    // ---------------------------
+    // 30–39 QUANTITY & MEASURE
+    // ---------------------------
+    "30": { fixed: false, min: 1, max: 8, format: "numeric", title: "Count" },
+  
+    // 310n – 316n (weights & volumes)
+    "3100": { fixed: true, length: 6, format: "numeric", title: "Net Weight (kg, 0 decimals)" },
+    "3101": { fixed: true, length: 6, format: "numeric", title: "Net Weight (kg, 1 decimal)" },
+    "3102": { fixed: true, length: 6, format: "numeric", title: "Net Weight (kg, 2 decimals)" },
+    "3103": { fixed: true, length: 6, format: "numeric", title: "Net Weight (kg, 3 decimals)" },
+  
+    "3110": { fixed: true, length: 6, format: "numeric", title: "Length (m)" },
+    "3120": { fixed: true, length: 6, format: "numeric", title: "Width (m)" },
+    "3130": { fixed: true, length: 6, format: "numeric", title: "Height (m)" },
+    "3140": { fixed: true, length: 6, format: "numeric", title: "Area (m²)" },
+    "3150": { fixed: true, length: 6, format: "numeric", title: "Volume (L)" },
+    "3160": { fixed: true, length: 6, format: "numeric", title: "Volume (m³)" },
+  
+    "3200": { fixed: true, length: 6, format: "numeric", title: "Weight (lb)" },
+    "3300": { fixed: true, length: 6, format: "numeric", title: "Logistics Weight (kg)" },
+  
+    "3370": { fixed: true, length: 6, format: "numeric", title: "Fat Content (%)" },
+  
+    "3900": { fixed: false, min: 1, max: 15, format: "numeric", title: "Amount Payable" },
+    "3901": { fixed: false, min: 1, max: 15, format: "numeric", title: "Amount Payable" },
+    "3902": { fixed: false, min: 1, max: 15, format: "numeric", title: "Amount Payable" },
+    "3903": { fixed: false, min: 1, max: 15, format: "numeric", title: "Amount Payable" },
+  
+    "3910": { fixed: false, min: 1, max: 18, format: "numeric", title: "Amount Payable (ISO Currency)" },
+  
+    "3920": { fixed: false, min: 1, max: 15, format: "numeric", title: "Unit Price" },
+    "3930": { fixed: false, min: 1, max: 18, format: "numeric", title: "Unit Price (ISO Currency)" },
+  
+    // ---------------------------
+    // 4XX — LOCATION & LOGISTICS
+    // ---------------------------
+    "400": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Order Number" },
+    "401": { fixed: true, length: 17, format: "numeric", title: "GSIN" },
+    "402": { fixed: true, length: 17, format: "numeric", title: "GINC" },
+    "403": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Routing Code" },
+  
+    "410": { fixed: true, length: 13, format: "numeric", title: "Ship To GLN" },
+    "411": { fixed: true, length: 13, format: "numeric", title: "Bill To GLN" },
+    "412": { fixed: true, length: 13, format: "numeric", title: "Purchased From GLN" },
+    "413": { fixed: true, length: 13, format: "numeric", title: "Ship For/Deliver For GLN" },
+    "414": { fixed: true, length: 13, format: "numeric", title: "GLN of Production Location" },
+    "415": { fixed: true, length: 13, format: "numeric", title: "GLN of Invoicing Party" },
+    "416": { fixed: true, length: 13, format: "numeric", title: "GLN of Ship To" },
+    "417": { fixed: true, length: 13, format: "numeric", title: "GLN of Return Location" },
+  
+    "420": { fixed: false, min: 1, max: 20, format: "alphanumeric", title: "Ship To Postal Code" },
+    "421": { fixed: false, min: 3, max: 12, format: "alphanumeric", title: "Postal Code + Country" },
+    "422": { fixed: true, length: 3, format: "numeric", title: "Country of Origin" },
+    "423": { fixed: false, min: 4, max: 15, format: "numeric", title: "Country Subdivision" },
+  
+    // ---------------------------
+    // 7XX — HEALTHCARE
+    // ---------------------------
+    "7001": { fixed: true, length: 13, format: "numeric", title: "NHRN" },
+    "7002": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "NHRN Additional" },
+    "7003": { fixed: false, min: 1, max: 10, format: "numeric", title: "Expiration Time" },
+    "7004": { fixed: false, min: 1, max: 4, format: "numeric", title: "Active Potency" },
+  
+    // ---------------------------
+    // 8XX — SPECIAL USE / DIGITAL LINK
+    // ---------------------------
+    "8001": { fixed: true, length: 14, format: "numeric", title: "Roll Products" },
+    "8002": { fixed: false, min: 1, max: 20, format: "alphanumeric", title: "Cellulose Content" },
+    "8003": { fixed: false, min: 14, max: 30, format: "alphanumeric", title: "GRAI" },
+    "8004": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "GIAI" },
+    "8005": { fixed: true, length: 6, format: "numeric", title: "Price per UOM" },
+    "8006": { fixed: true, length: 18, format: "numeric", title: "Identification of Component" },
+    "8007": { fixed: false, min: 1, max: 34, format: "numeric", title: "IBAN" },
+    "8008": { fixed: true, length: 12, format: "numeric", title: "Date/Time of Processing" },
+  
+    "8010": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Component Serial Number" },
+    "8011": { fixed: true, length: 13, format: "numeric", title: "GSRN" },
+    "8012": { fixed: false, min: 1, max: 20, format: "alphanumeric", title: "Software Version" },
+    "8013": { fixed: true, length: 12, format: "numeric", title: "GMN" },
+  
+    "8110": { fixed: false, min: 1, max: 70, format: "alphanumeric", title: "Coupon Code ID" },
+    "8112": { fixed: false, min: 1, max: 70, format: "alphanumeric", title: "Paperless Coupon ID" },
+  
+    "8200": { fixed: false, min: 1, max: 70, format: "alphanumeric", title: "GPS Coordinates" },
+    "8201": { fixed: false, min: 1, max: 70, format: "alphanumeric", title: "Global Location Coordinates" },
+    "8202": { fixed: false, min: 1, max: 2000, format: "alphanumeric", title: "GS1 Digital Link URL" },
+    "8203": { fixed: false, min: 1, max: 2000, format: "alphanumeric", title: "Digital Link Extended" },
+  
+    // ---------------------------
+    // 9XX — INTERNAL USE
+    // ---------------------------
+    "90": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Internal Code" },
+    "91": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Internal Code" },
+    "92": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Internal Code" },
+    "93": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Internal Code" },
+    "94": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Internal Code" },
+    "95": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Internal Code" },
+    "96": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Internal Code" },
+    "97": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Internal Code" },
+    "98": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Internal Code" },
+    "99": { fixed: false, min: 1, max: 30, format: "alphanumeric", title: "Internal Code" }
   };
+
+export const gs128Parser = (value: string): number[] => {
+    const charList = [...value];
+    const ai_pos_start = getAllIndexes(charList, "(").map(i => i + 1);
+    const ai_pos_end = getAllIndexes(charList, ")").map(i => i - 1);
+    if (ai_pos_start.length !== ai_pos_end.length) throw Error("GS1-128 format is not correct.");
+    const ai_req_lens = [2,3,4];
+    const FNC1 = 102;
+
+    const encodedData: number[] = [];
+    encodedData.push(FNC1);
+    let concatedNewValue = "";
+    
+    for (let i = 0; i < ai_pos_start.length; i++) {
+        const start = ai_pos_start[i];
+        const end = ai_pos_end[i];
+        const ai_len = (end - start) + 1;
+        
+        if (!ai_req_lens.includes(ai_len)) throw Error("GS1-128 format is not correct.");
+        const ai = charList.slice(start, end + 1);
+        const aiObj = GS1_AI_REGISTRY[ai.join("")];
+        if (!aiObj) throw Error(`GS1-128 AI not recognized for (${ai.join("")}).`);
+        const data = charList.slice(end + 2, ai_pos_start[i+ 1] ? ai_pos_start[i+ 1] - 1 : undefined);
+        const format = aiObj.format;
+
+        if (aiObj.fixed && aiObj.length) {
+            const reqLen = aiObj.length;
+            if (data.length !== reqLen) throw Error(`GS1-128 AI (${ai.join("")}) data length not correct.`);
+        } else if (!aiObj.fixed && aiObj.min && aiObj.max) {
+            const minLen = aiObj.min;
+            const maxLen = aiObj.max;
+            if (data.length < minLen || data.length > maxLen) throw Error(`GS1-128 AI (${ai.join("")}) data length not correct.`);
+        }
+        if (format === "numeric") {
+            if (data.some(ch => ch.charCodeAt(0) < 48 || ch.charCodeAt(0) > 57)) throw Error(`GS1-128 AI (${ai.join("")}) data format not correct.`);
+        } else if (format === "alphanumeric") {
+            if (!data.every(ch => (ch.charCodeAt(0) >= 48 && ch.charCodeAt(0) <= 57) ||
+            (ch.charCodeAt(0) >= 65 && ch.charCodeAt(0) <= 90))) throw Error(`GS1-128 AI (${ai.join("")}) data format not correct.`);
+        }
+        concatedNewValue += (ai.join("") + data.join(""));
+        if (!aiObj.fixed) {
+            encodedData.push(...mapValueToCode128(concatedNewValue), FNC1);
+            concatedNewValue = "";
+        }
+        console.log(encodedData);
+    }
+
+    if (concatedNewValue) encodedData.push(...mapValueToCode128(concatedNewValue));
+    else encodedData.pop();
+    console.log(encodedData);
+
+    return encodedData;
+}
+
+export const mapValueToCode128 = (valueStr: string): number[] => {
+    const encodedList: number[] = [];
+    const charList = [...valueStr];
+    for (let indx = 0; indx < charList.length; indx++) {
+        const char = charList[indx];
+        const isDigit = !isNaN(parseInt(char));
+
+        if (char.charCodeAt(0) >= 160 && char.charCodeAt(0) <= 255) {
+            const fnc4Code = 100;
+            const value = (char.charCodeAt(0) - 128) - 32;
+            encodedList.push(fnc4Code, value);
+            continue;
+        }
+
+        if (!isDigit) {
+            const value = char.charCodeAt(0) - 32;
+            encodedList.push(value);
+            continue;
+        }
+
+        const digitSeq: number[] = [];
+        for (let j = indx; j < charList.length; j++) {
+            const jChar = charList[j];
+            const isJDigit = !isNaN(parseInt(jChar));
+            if (isJDigit) digitSeq.push(parseInt(jChar));
+            else break;
+        }
+        if (digitSeq.length >= 6) {
+            const evenLen = digitSeq.length - (digitSeq.length % 2);
+            const digitPairs: number[] = [];
+            for (let k = 0; k < evenLen - 1; k = k + 2) {
+                digitPairs.push((digitSeq[k] * 10) + digitSeq[k + 1])
+            }
+            encodedList.push(99, ...(digitPairs), 100);
+            indx = indx + evenLen - 1;
+        } else {
+            const value = char.charCodeAt(0) - 32;
+            encodedList.push(value);
+        }
+    }
+
+    return encodedList;
+}
+
+export const code128Checksum = (digitList: number[]): number => {
+    const startBDigit = 104; // always start with B as it has complete ascii characters
+    let weightedSum = 0;
+    for (let i = 0; i < digitList.length; i++) {
+        const weight = i + 1;
+        weightedSum += (digitList[i] * weight);
+    }
+
+    weightedSum += (startBDigit * 1);
+
+    return weightedSum % 103;
+}
+
+export const encodeCode128 = (digitList: number[], isGS1 = false): BarcodeBit[] => {
+    if (digitList.length <= 0) throw Error("Atleat one value is required for Code-128");
+    const checksumVal = code128Checksum(digitList);
+    digitList.push(checksumVal);
+
+    const encodeBitsAry: BarcodeBit[] = [];
+    for (const digit of digitList) {
+        encodeBitsAry.push(...code128Encode[digit]);
+    }
+
+    const startBDigit = 104;
+    const stopDigit = 106;
+    return [
+            ...code128Encode[startBDigit],
+            ...encodeBitsAry,
+            ...code128Encode[stopDigit],
+            1,
+            0,
+            1,
+    ]
+}
 
 export const ean13CalcChecksum = (digitList: Digit[]): Digit => {
     digitList = digitList.toReversed();
@@ -769,3 +1151,18 @@ export const isValidCode93 = (value: string | null): [boolean, string] => {
   
     return [true, ""];
 }
+
+export const isValidCode128 = (valueStr: string | null): [boolean, string] => {
+    if (valueStr === null) return [false, "Code128 value must not be empty."];
+    if (!/^[\x20-\x7E\xA0-\xFF]+$/.test(valueStr)) return [false, "Code128 must only contain printable ASCII and Latin-1 (ISO-8859-1)."];
+    return [true, ""]
+}
+
+function getAllIndexes<T>(arr: T[], val: T): number[] {
+    const indexes = [];
+    let i = -1;
+    while ((i = arr.indexOf(val, i + 1)) !== -1) {
+      indexes.push(i);
+    }
+    return indexes;
+  }

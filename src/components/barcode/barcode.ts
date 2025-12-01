@@ -1,6 +1,6 @@
 import templateHTML from "./barcode.html?raw";
 import { IBarcodeAttr } from "./barcode.types";
-import { BarcodeBit, Code11Digit, Digit, bitMapTransform, code39Or93ExtendedNormalize, encodeCode11, encodeCode39, encodeCode93, encodeEan13, encodeEan8, encodeUpca, encodeUpce, getEan13LongTailPos, getEan8LongTailPos, getUpcaLongTailPos, getUpceLongTailPos, isValidCode11, isValidCode39Or93, isValidCode93, mapValueToCode39Or93Digits } from "./utils/encoding";
+import { BarcodeBit, Code11Digit, Digit, bitMapTransform, code39Or93ExtendedNormalize, encodeCode11, encodeCode128, encodeCode39, encodeCode93, encodeEan13, encodeEan8, encodeUpca, encodeUpce, getEan13LongTailPos, getEan8LongTailPos, getUpcaLongTailPos, getUpceLongTailPos, gs128Parser, isValidCode11, isValidCode128, isValidCode39Or93, isValidCode93, mapValueToCode128, mapValueToCode39Or93Digits } from "./utils/encoding";
 
 const template = document.createElement("template");
 template.innerHTML = templateHTML;
@@ -112,6 +112,16 @@ class Barcode extends HTMLElement {
                 const mappedValue = code39Or93ExtendedNormalize(value ?? "", true);
                 const digitValue = mapValueToCode39Or93Digits(mappedValue, true);
                 return [encodeCode93(digitValue), []];
+            } else if (type === "code128") {
+                const [isValid, message] = isValidCode128(value);
+                if (!isValid) throw Error(message);
+                if (value === null) throw Error("Value must not be empty for Code128.");
+                const mappedValue = mapValueToCode128(value);
+                return [encodeCode128(mappedValue), []];
+            } else if (type === "GS1-128") {
+                if (value === null) throw Error("Value must not be empty for Code128.");
+                const dataValue = gs128Parser(value);
+                return [encodeCode128(dataValue), []];
             } else {
               throw Error("Give proper barcode type and its respective value to encode");   
             }

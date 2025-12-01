@@ -1,4 +1,4 @@
-export type BarcodeType = "ean13" | "ean8" | "upca" | "upce" | "code11" | "code39" | "code39Extended" | "code93" | "code93Extended";
+export type BarcodeType = "ean13" | "ean8" | "upca" | "upce" | "code11" | "code39" | "code39Extended" | "code93" | "code93Extended" | "code128" | "GS1-128";
 
 export interface IBarcodeAttr {
     type: BarcodeType | null;
