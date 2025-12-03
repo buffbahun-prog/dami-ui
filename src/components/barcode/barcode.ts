@@ -1,6 +1,6 @@
 import templateHTML from "./barcode.html?raw";
 import { IBarcodeAttr } from "./barcode.types";
-import { BarcodeBit, Code11Digit, Digit, bitMapTransform, code39Or93ExtendedNormalize, encodeCode11, encodeCode128, encodeCode39, encodeCode93, encodeEan13, encodeEan8, encodeUpca, encodeUpce, getEan13LongTailPos, getEan8LongTailPos, getUpcaLongTailPos, getUpceLongTailPos, gs128Parser, isValidCode11, isValidCode128, isValidCode39Or93, isValidCode93, mapValueToCode128, mapValueToCode39Or93Digits } from "./utils/encoding";
+import { BarcodeBit, Code11Digit, Digit, MSImods, bitMapTransform, code39Or93ExtendedNormalize, encodeCode11, encodeCode128, encodeCode39, encodeCode93, encodeEan13, encodeEan8, encodeMSI, encodePostnet, encodeUpca, encodeUpce, getEan13LongTailPos, getEan8LongTailPos, getUpcaLongTailPos, getUpceLongTailPos, gs128Parser, isValidCode11, isValidCode128, isValidCode39Or93, isValidCode93, mapValueToCode128, mapValueToCode39Or93Digits } from "./utils/encoding";
 
 const template = document.createElement("template");
 template.innerHTML = templateHTML;
@@ -51,7 +51,7 @@ class Barcode extends HTMLElement {
         }
     }
 
-    getBarcodeBits(): [BarcodeBit[], number[]] {
+    getBarcodeBits(): [BarcodeBit[], number[], number[]] {
         try {
             const type = (this.getAttribute("type") || null) as IBarcodeAttr["type"];
             const value: IBarcodeAttr["value"] = this.getAttribute("value") || null;
@@ -61,67 +61,83 @@ class Barcode extends HTMLElement {
                 const digitValue = value.trim().split("").
                                     map(dgStr => parseInt(dgStr)).
                                     filter(dg => !isNaN(dg)) as Digit[];
-                return [encodeEan13(digitValue), getEan13LongTailPos()];
+                return [encodeEan13(digitValue), getEan13LongTailPos(), []];
             } else if (type === "ean8") {
                 const regex = /^\d{7}$/;
                 if (value === null || !regex.test(value.trim())) throw Error("7 digits required.");
                 const digitValue = value.trim().split("").
                                     map(dgStr => parseInt(dgStr)).
                                     filter(dg => !isNaN(dg)) as Digit[];
-                return [encodeEan8(digitValue), getEan8LongTailPos()];
+                return [encodeEan8(digitValue), getEan8LongTailPos(), []];
             } else if (type === "upca") {
                 const regex = /^\d{11}$/;
                 if (value === null || !regex.test(value.trim())) throw Error("11 digits required.");
                 const digitValue = value.trim().split("").
                                     map(dgStr => parseInt(dgStr)).
                                     filter(dg => !isNaN(dg)) as Digit[];
-                return [encodeUpca(digitValue), getUpcaLongTailPos()];
+                return [encodeUpca(digitValue), getUpcaLongTailPos(), []];
             } else if (type === "upce") {
                 const regex = /^\d{6}$/;
                 if (value === null || !regex.test(value.trim())) throw Error("6 digits required.");
                 const digitValue = value.trim().split("").
                                     map(dgStr => parseInt(dgStr)).
                                     filter(dg => !isNaN(dg)) as Digit[];
-                return [encodeUpce(digitValue), getUpceLongTailPos()];
+                return [encodeUpce(digitValue), getUpceLongTailPos(), []];
             } else if (type === "code11") {
                 const [isValid, message] = isValidCode11(value);
                 if (value === null || !isValid) throw Error(message);
                 const digitValue = value.trim().split("").
                                     map(dgStr => dgStr === "-" ? 10 : parseInt(dgStr)).
                                     filter(dg => !isNaN(dg)) as Code11Digit[];
-                return [encodeCode11(digitValue), []];
+                return [encodeCode11(digitValue), [], []];
             } else if (type === "code39") {
                 const [isValid, message] = isValidCode39Or93(value);
                 if (value === null || !isValid) throw Error(message);
                 const digitValue = mapValueToCode39Or93Digits(value);
-                return [encodeCode39(digitValue), []];
+                return [encodeCode39(digitValue), [], []];
             } else if (type === "code39Extended") {
                 const isValid = /^[\x00-\x7F]*$/.test(value ?? "");
                 if (!isValid) throw Error("Only ASCII characters are allowed for code-39 (extended)");
                 const mappedValue = code39Or93ExtendedNormalize(value ?? "");
                 const digitValue = mapValueToCode39Or93Digits(mappedValue);
-                return [encodeCode39(digitValue), []];
+                return [encodeCode39(digitValue), [], []];
             } else if (type === "code93") {
                 const [isValid, message] = isValidCode39Or93(value);
                 if (value === null || !isValid) throw Error(message);
                 const digitValue = mapValueToCode39Or93Digits(value, true);
-                return [encodeCode93(digitValue), []];
+                return [encodeCode93(digitValue), [], []];
             } else if (type === "code93Extended") {
                 const isValid = /^[\x00-\x7F]*$/.test(value ?? "");
                 if (!isValid) throw Error("Only ASCII characters are allowed for code-93 (extended)");
                 const mappedValue = code39Or93ExtendedNormalize(value ?? "", true);
                 const digitValue = mapValueToCode39Or93Digits(mappedValue, true);
-                return [encodeCode93(digitValue), []];
+                return [encodeCode93(digitValue), [], []];
             } else if (type === "code128") {
                 const [isValid, message] = isValidCode128(value);
                 if (!isValid) throw Error(message);
                 if (value === null) throw Error("Value must not be empty for Code128.");
                 const mappedValue = mapValueToCode128(value);
-                return [encodeCode128(mappedValue), []];
+                return [encodeCode128(mappedValue), [], []];
             } else if (type === "GS1-128") {
                 if (value === null) throw Error("Value must not be empty for Code128.");
                 const dataValue = gs128Parser(value);
-                return [encodeCode128(dataValue), []];
+                return [encodeCode128(dataValue), [], []];
+            } else if (type.includes("MSI")) {
+                const mod = type.slice(6) as MSImods;
+                const regex = /^[0-9]+$/;
+                if (value === null || !regex.test(value.trim())) throw Error("Only digits required.");
+                const digitValue = value.trim().split("").
+                                    map(dgStr => parseInt(dgStr)).
+                                    filter(dg => !isNaN(dg)) as Digit[];
+                return [encodeMSI(digitValue, mod), [], []];
+            } else if (type === "postnet") {
+                const regex = /^(?:\d{5}|\d{9}|\d{11})$/;
+                if (value === null || !regex.test(value.trim())) throw Error("Only digits(5, 9 or 11) required.");
+                const digitValue = value.trim().split("").
+                                    map(dgStr => parseInt(dgStr)).
+                                    filter(dg => !isNaN(dg)) as Digit[];
+                const [encodedBits, wideBarPos] = encodePostnet(digitValue);
+                return [encodedBits, [], wideBarPos];
             } else {
               throw Error("Give proper barcode type and its respective value to encode");   
             }
@@ -130,7 +146,7 @@ class Barcode extends HTMLElement {
         }
     }
 
-    drawBarcode(bitAry: BarcodeBit[], longTailPos: number[] = [], displayText: string) {
+    drawBarcode(bitAry: BarcodeBit[], longTailPos: number[] = [], postnetLongPos: number[] = [], displayText: string) {
         if (this.svgElm === null || bitAry.length <= 0) return;
 
         const totalWidth = 300;
@@ -158,11 +174,13 @@ class Barcode extends HTMLElement {
             const rectHeight = barcodeHeight + (longTailPos.includes(barWidthMap.slice(0, indx + 1).reduce((acc, cur) => acc + Math.abs(cur), 0) - 1) ? longTailExtraHeight : 0);
             const rectElm = document.createElementNS(svgns, 'rect');
 
+            const rectStartYForPostnetNarrow = postnetLongPos.includes(barWidthMap.slice(0, indx + 1).reduce((acc, cur) => acc + Math.abs(cur), 0) - 1) ? 0 : (barcodeHeight / 2);
+
             rectElm.setAttribute("x", `${xPos}`);
-            rectElm.setAttribute("y", `${startY}`);
+            rectElm.setAttribute("y", `${startY + rectStartYForPostnetNarrow}`);
 
             rectElm.setAttribute("width", `${rectWidth}`);
-            rectElm.setAttribute("height", `${rectHeight}`);
+            rectElm.setAttribute("height", `${rectHeight - rectStartYForPostnetNarrow}`);
 
             rectElm.setAttribute("fill", bitWidth < 0 ? bar0Color : bar1Color);
 

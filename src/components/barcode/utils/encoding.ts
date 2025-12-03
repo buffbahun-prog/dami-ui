@@ -22,6 +22,8 @@ enum Markers {
     Code11StartEnd = 4,
     Code39StartEnd = 5,
     Code93StartEnd = 6,
+    MSIStart = 7,
+    MSIEnd = 8,
 }
 
 enum BarType {
@@ -43,6 +45,8 @@ interface IMarkersEncode {
     [Markers.Code11StartEnd]: BarcodeBit[];
     [Markers.Code39StartEnd]: BarcodeBit[];
     [Markers.Code93StartEnd]: BarcodeBit[];
+    [Markers.MSIStart]: BarcodeBit[];
+    [Markers.MSIEnd]: BarcodeBit[];
 }
 
 const markersBits: IMarkersEncode = {
@@ -53,6 +57,8 @@ const markersBits: IMarkersEncode = {
     [Markers.Code11StartEnd]: [1,0,1,1,0,0,1],
     [Markers.Code39StartEnd]: [1,0,0,1,0,1,1,0,1,1,0,1],
     [Markers.Code93StartEnd]: [1,0,1,0,1,1,1,1,0],
+    [Markers.MSIStart]: [1, 1, 0],
+    [Markers.MSIEnd]: [1, 0, 0, 1],
 }
 
 interface IEncodeStruct {
@@ -517,12 +523,10 @@ export const gs128Parser = (value: string): number[] => {
             encodedData.push(...mapValueToCode128(concatedNewValue), FNC1);
             concatedNewValue = "";
         }
-        console.log(encodedData);
     }
 
     if (concatedNewValue) encodedData.push(...mapValueToCode128(concatedNewValue));
     else encodedData.pop();
-    console.log(encodedData);
 
     return encodedData;
 }
@@ -603,6 +607,106 @@ export const encodeCode128 = (digitList: number[], isGS1 = false): BarcodeBit[] 
             1,
             0,
             1,
+    ]
+}
+
+export type MSImods = "10" | "11" | "1010" | "1110";
+
+export const msiCalcChecksum = (digitList: Digit[], mod: MSImods): Digit[] => {
+    digitList = digitList.toReversed();
+    const mods = mod.length === 4 ? [mod.slice(0, 2), mod.slice(2,4)] : [mod];
+    const chkSm: Digit[] = [];
+    for (const md of mods) {
+        let partialSum = 0;
+        if (md === "11") {
+            for (let i = 0; i < digitList.length; i++) {
+                const weight = (i % 6) + 2;
+                partialSum += (digitList[i] * weight);
+            }
+            const cs = (11 - (partialSum % 11)) % 11 as Digit;
+            chkSm.push(cs);
+            digitList.unshift(cs);
+        }
+        else if (md === "10") {
+            for (let i = 0; i < digitList.length; i++) {
+                const position = i + 1;
+                if (position % 2 > 0) {
+                    let doubledVal = digitList[i] * 2;
+                    if (doubledVal > 9) doubledVal = doubledVal - 9;
+                    partialSum += doubledVal;
+                } else {
+                    partialSum += (digitList[i] * 1);
+                }
+            }
+            const cs = (10 - (partialSum % 10)) % 10 as Digit;
+            chkSm.push(cs);
+            digitList.unshift(cs);
+        }
+    }
+    return chkSm;
+}
+
+export const encodeMSI = (digitList: Digit[], mod: MSImods): BarcodeBit[] => {
+    if (digitList.length <= 0) throw Error("Atleat one value is required for MSI");
+    const checkSum = msiCalcChecksum(digitList, mod);
+    digitList.push(...checkSum);
+
+    const bitMap: Record<"0" | "1", BarcodeBit[]> = {
+        "0": [1,0,0],
+        "1": [1,1,0],
+    };
+
+    const encodeBitsAry: BarcodeBit[] = [];
+    for (const digit of digitList) {
+        const barStruct = digit.toString(2).padStart(4, '0').split("") as ("0" | "1")[];
+        const encodedDigit = barStruct.map(br => bitMap[br]).flat();
+        encodeBitsAry.push(...encodedDigit);
+    }
+
+    return [
+        ...markersBits[Markers.MSIStart],
+        ...encodeBitsAry,
+        ...markersBits[Markers.MSIEnd],
+    ]
+}
+
+export const encodePostnet = (digitList: Digit[]): [BarcodeBit[], number[]] => {
+    const partialSm = (digitList as number[]).reduce((acc, cur) => acc + cur, 0);
+    const checkSum = (10 - (partialSm % 10)) % 10 as Digit;
+    digitList.push(checkSum);
+
+    const encodedBitsAry: number[] = [];
+
+    const barNumericEquvalence = [7, 4, 2, 1, 0];
+    for (let indx = 0; indx < digitList.length; indx++) {
+        let codeValue: number = digitList[indx];
+        if (codeValue === 0) codeValue = 11;
+        const wideBarPos: number[] = [];
+        for (const numRep1 of barNumericEquvalence.slice(0, 4)) {
+            let isBreak = false;
+            for (const numRep2 of barNumericEquvalence.slice(1, 5)) {
+                if ((numRep1 !== numRep2) && (numRep1 + numRep2 === codeValue)) {
+                    wideBarPos.push(numRep1, numRep2);
+                    isBreak = true;
+                    break;
+                }
+            }
+            if (isBreak) break;
+        }
+
+        const bitEncode = barNumericEquvalence.flatMap(br => wideBarPos.includes(br) ? [1, 0] : [-1, 0]);
+        encodedBitsAry.push(...bitEncode);
+    }
+    const encodedBits = [
+        1,
+        0,
+        ...encodedBitsAry,
+        1,
+    ];
+    const widePosIndx = encodedBits.map((bts, indx) => bts > 0 ? indx : null).filter(bts => bts !== null) as number[];
+    return [
+        encodedBits.map(bt => bt < 0 ? 1 : bt) as BarcodeBit[],
+        widePosIndx,
     ]
 }
 
