@@ -13,8 +13,7 @@ export enum QrErrorCorrection {
     H = "H",
 }
 
-export interface IBarcodeAttr {
-    encoding: QrEncoding | null;
+export interface IQrcodeAttr {
     errorCorrection: QrErrorCorrection | null;
     value: string | null;
 }

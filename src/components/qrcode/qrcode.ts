@@ -1,4 +1,6 @@
-import templateHTML from "./barcode.html?raw";
+import templateHTML from "./qrcode.html?raw";
+import { IQrcodeAttr, QrErrorCorrection } from "./qrcode.types";
+import { QrcodeBit, encodeQr } from "./utils/encoding";
 
 const template = document.createElement("template");
 template.innerHTML = templateHTML;
@@ -16,7 +18,7 @@ const xTotalPadding = 64;
 const yTotalPadding = xTotalPadding;
 
 class Qrcode extends HTMLElement {
-    // static observedAttributes: (keyof IBarcodeAttr)[] = ["type", "value"];
+    static observedAttributes: (keyof IQrcodeAttr)[] = ["errorCorrection", "value"];
     svgElm: SVGSVGElement | null;
     constructor() {
         super();
@@ -28,7 +30,7 @@ class Qrcode extends HTMLElement {
         shadow.appendChild(template.content.cloneNode(true));
         this.svgElm = shadow.querySelector("svg");
         this.svgElm?.setAttribute("viewBox", viewBoxValue);
-        this.onBarcodeAttrChange();
+        this.onQrcodeAttrChange();
     }
 
     attributeChangedCallback(
@@ -36,81 +38,71 @@ class Qrcode extends HTMLElement {
         oldValue: string | null,
         newValue: string | null
     ) {
-        this.onBarcodeAttrChange();
+        this.onQrcodeAttrChange();
     }
 
-    onBarcodeAttrChange() {
+    onQrcodeAttrChange() {
         try {
-            // const barcodeBitAry = this.getBarcodeBits();
-            // const value = this.getAttribute("value") ?? '';
-            // this.drawBarcode(...barcodeBitAry, value);
+            const qrCodeBitMatrix = this.getQrcodeBits();
+            this.drawQrcode(qrCodeBitMatrix);
         } catch (e) {
             throw e;
         }
     }
 
-    getQrcodeBits() {
+    getQrcodeBits(): QrcodeBit[][] {
         try {
+            const errorCorrection = (this.getAttribute("errorCorrection") || null) as IQrcodeAttr["errorCorrection"];
+            const value: IQrcodeAttr["value"] = this.getAttribute("value") || null;
             
+            return encodeQr(value, errorCorrection ?? QrErrorCorrection.M);
         } catch (e) {
             throw e;
         }
     }
 
-    // drawBarcode(bitAry: BarcodeBit[], longTailPos: number[] = [], postnetLongPos: number[] = [], displayText: string) {
-    //     if (this.svgElm === null || bitAry.length <= 0) return;
+    drawQrcode(bitMatrix: QrcodeBit[][]) {
+        if (this.svgElm === null || bitMatrix.length <= 0) return;
 
-    //     const totalWidth = 300;
-    //     const totalHeight = 150;
+        const totalWidth = 300;
+        const totalHeight = totalWidth;
 
-    //     const barcodeWidth = totalWidth - xTotalPadding;
-    //     const barcodeHeight = totalHeight - yTotalPadding;
+        const qrcodeWidth = totalWidth - xTotalPadding;
 
-    //     const barWidth = (barcodeWidth / bitAry.length);
+        const moduleSize = (qrcodeWidth / bitMatrix.length);
 
-    //     const barcodeTopMargin = -20;
-    //     const startX = xTotalPadding / 2;
-    //     const startY = (yTotalPadding + barcodeTopMargin) / 2;
+        const startX = xTotalPadding / 2;
+        const startY = yTotalPadding / 2;
 
-    //     const bar0Color = 'white';
-    //     const bar1Color = 'black';
-    //     const longTailExtraHeight = 10;
+        const module0Color = 'white';
+        const module1Color = 'black';
 
-    //     const barWidthMap = bitMapTransform(bitAry);
+        let xPos = startX; 
+        let yPos = startY;
 
-    //     let xPos = startX; 
+        for (const row of bitMatrix) {
+            const rectWidth = moduleSize;
+            const rectHeight = moduleSize;
 
-    //     for (const [indx, bitWidth] of barWidthMap.entries()) {
-    //         const rectWidth = barWidth * Math.abs(bitWidth);
-    //         const rectHeight = barcodeHeight + (longTailPos.includes(barWidthMap.slice(0, indx + 1).reduce((acc, cur) => acc + Math.abs(cur), 0) - 1) ? longTailExtraHeight : 0);
-    //         const rectElm = document.createElementNS(svgns, 'rect');
+            for (const bitModule of row) {
+                const rectElm = document.createElementNS(svgns, 'rect');
 
-    //         const rectStartYForPostnetNarrow = postnetLongPos.includes(barWidthMap.slice(0, indx + 1).reduce((acc, cur) => acc + Math.abs(cur), 0) - 1) ? 0 : (barcodeHeight / 2);
+                rectElm.setAttribute("x", `${xPos}`);
+                rectElm.setAttribute("y", `${yPos}`);
 
-    //         rectElm.setAttribute("x", `${xPos}`);
-    //         rectElm.setAttribute("y", `${startY + rectStartYForPostnetNarrow}`);
+                rectElm.setAttribute("width", `${rectWidth}`);
+                rectElm.setAttribute("height", `${rectHeight}`);
 
-    //         rectElm.setAttribute("width", `${rectWidth}`);
-    //         rectElm.setAttribute("height", `${rectHeight - rectStartYForPostnetNarrow}`);
+                rectElm.setAttribute("fill", bitModule > 0 ? module1Color : bitModule < 0 ? 'blue' : module0Color);
+                if (bitModule === null) rectElm.setAttribute("fill", "grey");
 
-    //         rectElm.setAttribute("fill", bitWidth < 0 ? bar0Color : bar1Color);
-
-    //         this.svgElm.appendChild(rectElm);
-    //         xPos += rectWidth;
-    //     }
-
-    //     const textElm = document.createElementNS(svgns, 'text');
-    //     textElm.setAttribute("dominant-baseline", "text-before-edge");
-    //     textElm.textContent = displayText;
-    //     this.svgElm.appendChild(textElm);
-
-    //     const textTopMargin = 5;
-    //     const textWidth = textElm.clientWidth;
-    //     const textXPos = (totalWidth / 2) - (textWidth);
-    //     const textYPos = startY + barcodeHeight + longTailExtraHeight + textTopMargin;
-    //     textElm.setAttribute("x", `${textXPos}`);
-    //     textElm.setAttribute("y", `${textYPos}`);
-    // }
+                this.svgElm.appendChild(rectElm);
+                xPos += rectWidth;
+            }
+            yPos += rectHeight;
+            xPos = startX;
+        }
+    }
 }
 
 customElements.define("dami-qrcode", Qrcode);

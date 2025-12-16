@@ -87,6 +87,19 @@ const ErrorCorrectionCodeTable: Record<QrErrorCorrection, ErrorCorrectCode[]> = 
     [QrErrorCorrection.H]: [{dataCapacity:9,errorPerBlock:17,g1Blocks:1,g1BlockCapacity:9,g2Blocks:0,g2BlockCapacity:0},{dataCapacity:16,errorPerBlock:28,g1Blocks:1,g1BlockCapacity:16,g2Blocks:0,g2BlockCapacity:0},{dataCapacity:26,errorPerBlock:22,g1Blocks:2,g1BlockCapacity:13,g2Blocks:0,g2BlockCapacity:0},{dataCapacity:36,errorPerBlock:16,g1Blocks:4,g1BlockCapacity:9,g2Blocks:0,g2BlockCapacity:0},{dataCapacity:46,errorPerBlock:22,g1Blocks:2,g1BlockCapacity:11,g2Blocks:2,g2BlockCapacity:12},{dataCapacity:60,errorPerBlock:28,g1Blocks:4,g1BlockCapacity:15,g2Blocks:0,g2BlockCapacity:0},{dataCapacity:66,errorPerBlock:26,g1Blocks:4,g1BlockCapacity:13,g2Blocks:1,g2BlockCapacity:14},{dataCapacity:86,errorPerBlock:26,g1Blocks:4,g1BlockCapacity:14,g2Blocks:2,g2BlockCapacity:15},{dataCapacity:100,errorPerBlock:24,g1Blocks:4,g1BlockCapacity:12,g2Blocks:4,g2BlockCapacity:13},{dataCapacity:122,errorPerBlock:28,g1Blocks:6,g1BlockCapacity:15,g2Blocks:2,g2BlockCapacity:16},{dataCapacity:140,errorPerBlock:24,g1Blocks:3,g1BlockCapacity:12,g2Blocks:8,g2BlockCapacity:13},{dataCapacity:158,errorPerBlock:28,g1Blocks:7,g1BlockCapacity:14,g2Blocks:4,g2BlockCapacity:15},{dataCapacity:180,errorPerBlock:22,g1Blocks:12,g1BlockCapacity:11,g2Blocks:4,g2BlockCapacity:12},{dataCapacity:197,errorPerBlock:24,g1Blocks:11,g1BlockCapacity:12,g2Blocks:5,g2BlockCapacity:13},{dataCapacity:223,errorPerBlock:24,g1Blocks:11,g1BlockCapacity:12,g2Blocks:7,g2BlockCapacity:13},{dataCapacity:253,errorPerBlock:30,g1Blocks:3,g1BlockCapacity:15,g2Blocks:13,g2BlockCapacity:16},{dataCapacity:283,errorPerBlock:28,g1Blocks:2,g1BlockCapacity:14,g2Blocks:17,g2BlockCapacity:15},{dataCapacity:313,errorPerBlock:28,g1Blocks:2,g1BlockCapacity:14,g2Blocks:19,g2BlockCapacity:15},{dataCapacity:341,errorPerBlock:26,g1Blocks:9,g1BlockCapacity:13,g2Blocks:16,g2BlockCapacity:14},{dataCapacity:385,errorPerBlock:28,g1Blocks:15,g1BlockCapacity:15,g2Blocks:10,g2BlockCapacity:16},{dataCapacity:406,errorPerBlock:30,g1Blocks:19,g1BlockCapacity:16,g2Blocks:6,g2BlockCapacity:17},{dataCapacity:442,errorPerBlock:24,g1Blocks:34,g1BlockCapacity:13,g2Blocks:0,g2BlockCapacity:0},{dataCapacity:464,errorPerBlock:30,g1Blocks:16,g1BlockCapacity:15,g2Blocks:14,g2BlockCapacity:16},{dataCapacity:514,errorPerBlock:30,g1Blocks:30,g1BlockCapacity:16,g2Blocks:2,g2BlockCapacity:17},{dataCapacity:538,errorPerBlock:30,g1Blocks:22,g1BlockCapacity:15,g2Blocks:13,g2BlockCapacity:16},{dataCapacity:596,errorPerBlock:30,g1Blocks:33,g1BlockCapacity:16,g2Blocks:4,g2BlockCapacity:17},{dataCapacity:628,errorPerBlock:30,g1Blocks:12,g1BlockCapacity:15,g2Blocks:28,g2BlockCapacity:16},{dataCapacity:661,errorPerBlock:30,g1Blocks:11,g1BlockCapacity:15,g2Blocks:31,g2BlockCapacity:16},{dataCapacity:701,errorPerBlock:30,g1Blocks:19,g1BlockCapacity:15,g2Blocks:26,g2BlockCapacity:16},{dataCapacity:745,errorPerBlock:30,g1Blocks:23,g1BlockCapacity:15,g2Blocks:25,g2BlockCapacity:16},{dataCapacity:793,errorPerBlock:30,g1Blocks:23,g1BlockCapacity:15,g2Blocks:28,g2BlockCapacity:16},{dataCapacity:845,errorPerBlock:30,g1Blocks:19,g1BlockCapacity:15,g2Blocks:35,g2BlockCapacity:16},{dataCapacity:901,errorPerBlock:30,g1Blocks:11,g1BlockCapacity:15,g2Blocks:46,g2BlockCapacity:16},{dataCapacity:961,errorPerBlock:30,g1Blocks:59,g1BlockCapacity:16,g2Blocks:1,g2BlockCapacity:17},{dataCapacity:986,errorPerBlock:30,g1Blocks:22,g1BlockCapacity:15,g2Blocks:41,g2BlockCapacity:16},{dataCapacity:1054,errorPerBlock:30,g1Blocks:2,g1BlockCapacity:15,g2Blocks:64,g2BlockCapacity:16},{dataCapacity:1096,errorPerBlock:30,g1Blocks:24,g1BlockCapacity:15,g2Blocks:46,g2BlockCapacity:16},{dataCapacity:1142,errorPerBlock:30,g1Blocks:42,g1BlockCapacity:15,g2Blocks:32,g2BlockCapacity:16},{dataCapacity:1222,errorPerBlock:30,g1Blocks:10,g1BlockCapacity:15,g2Blocks:67,g2BlockCapacity:16},{dataCapacity:1276,errorPerBlock:30,g1Blocks:20,g1BlockCapacity:15,g2Blocks:61,g2BlockCapacity:16}],
 }
 
+export const RemainderBits = [0, 7, 7, 7, 7, 7, 0, 0, 0, 0, 0, 0, 0, 3, 3, 3, 3, 3, 3, 3, 4, 4, 4, 4, 4, 4, 4, 3, 3, 3, 3, 3, 3, 3, 0, 0, 0, 0, 0, 0];
+
+export const AlignmentPatternLocations = [[0],[6,18],[6,22],[6,26],[6,30],[6,34],[6,22,38],[6,24,42],[6,26,46],[6,28,50],[6,30,54],[6,32,58],[6,34,62],[6,26,46,66],[6,26,48,70],[6,26,50,74],[6,30,54,78],[6,30,56,82],[6,30,58,86],[6,34,62,90],[6,28,50,72,94],[6,26,50,74,98],[6,30,54,78,102],[6,28,54,80,106],[6,32,58,84,110],[6,30,58,86,114],[6,34,62,90,118],[6,26,50,74,98,122],[6,30,54,78,102,126],[6,26,52,78,104,130],[6,30,56,82,108,134],[6,34,60,86,112,138],[6,30,58,86,114,142],[6,34,62,90,118,146],[6,30,54,78,102,126,150],[6,24,50,76,102,128,154],[6,28,54,80,106,132,158],[6,32,58,84,110,136,162],[6,26,54,82,110,138,166],[6,30,58,86,114,142,170]]
+
+export const FormatInformationTable: Record<QrErrorCorrection, QrcodeBit[][]> = {
+    [QrErrorCorrection.L]: [[1,1,1,0,1,1,1,1,1,0,0,0,1,0,0], [1,1,1,0,0,1,0,1,1,1,1,0,0,1,1], [1,1,1,1,1,0,1,1,0,1,0,1,0,1,0], [1,1,1,1,0,0,0,1,0,0,1,1,1,0,1], [1,1,0,0,1,1,0,0,0,1,0,1,1,1,1], [1,1,0,0,0,1,1,0,0,0,1,1,0,0,0], [1,1,0,1,1,0,0,0,1,0,0,0,0,0,1], [1,1,0,1,0,0,1,0,1,1,1,0,1,1,0]],
+    [QrErrorCorrection.M]: [[1,0,1,0,1,0,0,0,0,0,1,0,0,1,0], [1,0,1,0,0,0,1,0,0,1,0,0,1,0,1], [1,0,1,1,1,1,0,0,1,1,1,1,1,0,0], [1,0,1,1,0,1,1,0,1,0,0,1,0,1,1], [1,0,0,0,1,0,1,1,1,1,1,1,0,0,1], [1,0,0,0,0,0,0,1,1,0,0,1,1,1,0], [1,0,0,1,1,1,1,1,0,0,1,0,1,1,1], [1,0,0,1,0,1,0,1,0,1,0,0,0,0,0]],
+    [QrErrorCorrection.Q]: [[0,1,1,0,1,0,1,0,1,0,1,1,1,1,1], [0,1,1,0,0,0,0,0,1,1,0,1,0,0,0], [0,1,1,1,1,1,1,0,0,1,1,0,0,0,1], [0,1,1,1,0,1,0,0,0,0,0,0,1,1,0], [0,1,0,0,1,0,0,1,0,1,1,0,1,0,0], [0,1,0,0,0,0,1,1,0,0,0,0,0,1,1], [0,1,0,1,1,1,0,1,1,0,1,1,0,1,0], [0,1,0,1,0,1,1,1,1,1,0,1,1,0,1]],
+    [QrErrorCorrection.H]: [[0,0,1,0,1,1,0,1,0,0,0,1,0,0,1], [0,0,1,0,0,1,1,1,0,1,1,1,1,1,0], [0,0,1,1,1,0,0,1,1,1,0,0,1,1,1], [0,0,1,1,0,0,1,1,1,0,1,0,0,0,0], [0,0,0,0,1,1,1,0,1,1,0,0,0,1,0], [0,0,0,0,0,1,0,0,1,0,1,0,1,0,1], [0,0,0,1,1,0,1,0,0,0,0,1,1,0,0], [0,0,0,1,0,0,0,0,0,1,1,1,0,1,1]],
+}
+
+export const VersionInformationTable: QrcodeBit[][] = [[0,0,0,1,1,1,1,1,0,0,1,0,0,1,0,1,0,0], [0,0,1,0,0,0,0,1,0,1,1,0,1,1,1,1,0,0], [0,0,1,0,0,1,1,0,1,0,1,0,0,1,1,0,0,1], [0,0,1,0,1,0,0,1,0,0,1,1,0,1,0,0,1,1], [0,0,1,0,1,1,1,0,1,1,1,1,1,1,0,1,1,0], [0,0,1,1,0,0,0,1,1,1,0,1,1,0,0,0,1,0], [0,0,1,1,0,1,1,0,0,0,0,1,0,0,0,1,1,1], [0,0,1,1,1,0,0,1,1,0,0,0,0,0,1,1,0,1], [0,0,1,1,1,1,1,0,0,1,0,0,1,0,1,0,0,0], [0,1,0,0,0,0,1,0,1,1,0,1,1,1,1,0,0,0], [0,1,0,0,0,1,0,1,0,0,0,1,0,1,1,1,0,1], [0,1,0,0,1,0,1,0,1,0,0,0,0,1,0,1,1,1], [0,1,0,0,1,1,0,1,0,1,0,0,1,1,0,0,1,0], [0,1,0,1,0,0,1,0,0,1,1,0,1,0,0,1,1,0], [0,1,0,1,0,1,0,1,1,0,1,0,0,0,0,0,1,1], [0,1,0,1,1,0,1,0,0,0,1,1,0,0,1,0,0,1], [0,1,0,1,1,1,0,1,1,1,1,1,1,0,1,1,0,0], [0,1,1,0,0,0,1,1,1,0,1,1,0,0,0,1,0,0], [0,1,1,0,0,1,0,0,0,1,1,1,1,0,0,0,0,1], [0,1,1,0,1,0,1,1,1,1,1,0,1,0,1,0,1,1], [0,1,1,0,1,1,0,0,0,0,1,0,0,0,1,1,1,0], [0,1,1,1,0,0,1,1,0,0,0,0,0,1,1,0,1,0], [0,1,1,1,0,1,0,0,1,1,0,0,1,1,1,1,1,1], [0,1,1,1,1,0,1,1,0,1,0,1,1,1,0,1,0,1], [0,1,1,1,1,1,0,0,1,0,0,1,0,1,0,0,0,0], [1,0,0,0,0,0,1,0,0,1,1,1,0,1,0,1,0,1], [1,0,0,0,0,1,0,1,1,0,1,1,1,1,0,0,0,0], [1,0,0,0,1,0,1,0,0,0,1,0,1,1,1,0,1,0], [1,0,0,0,1,1,0,1,1,1,1,0,0,1,1,1,1,1], [1,0,0,1,0,0,1,0,1,1,0,0,0,0,1,0,1,1], [1,0,0,1,0,1,0,1,0,0,0,0,1,0,1,1,1,0], [1,0,0,1,1,0,1,0,1,0,0,1,1,0,0,1,0,0], [1,0,0,1,1,1,0,1,0,1,0,1,0,0,0,0,0,1], [1,0,1,0,0,0,1,1,0,0,0,1,1,0,1,0,0,1]]
+
 const getCharCountIndicatorLen = (version: number, encodeMode: QrEncoding): number => {
     if (version < 1 || version > 40) throw Error("Version number not correct.");
     if (version >= 1 && version <= 9) {
@@ -236,17 +249,6 @@ const transformBitsToBlocks = (encodedData: QrcodeBit[], g1Blocks: number, g1Blo
     return grpAndBlocks;
 }
 
-const getTwosExponent = (num: number): number => {
-    num = Math.abs(num);
-    let pow = 0;
-    if (num === 0) throw Error("Incorrect number given for 2's power.");
-    while (num > 1) {
-        if (num % 2 !== 0) throw Error("Number should be power of 2.");
-        num = num / 2;
-        pow++;
-    }
-    return pow;
-}
 
 const transformToGF = (exponent: number): number => {
     if (exponent >= 256) exponent = exponent % 255;
@@ -271,7 +273,7 @@ const genAntilogTable = () => {
 
 const getExp = (int: number): number => {
     if (AntilogTable.length <= 0) genAntilogTable();
-    if (int < 1 || int > 255) throw Error("Integer value for antilog table not correct.");
+    if (int < 1 || int > 255) throw Error(`Integer value for antilog table not correct., ${int}`);
     const exp =  AntilogTable.find(obj => obj.integer === int)?.exponent;
     if (exp === undefined) throw Error("Cant find exponent value for integer.");
     return exp;
@@ -312,8 +314,34 @@ const genErrorCode = (errorCodeware: number, encodedData: QrcodeBit[]): Polynomi
     return polynomialDivision(msgPoly, genPoly, msgPoly.length);
 }
 
+const getErrorCodeBlocks = (errorCodeware: number, blockData: QrBlocks): QrBlocks => {
+    const errorBlocks: QrBlocks = {
+        g1: []
+    }
+    const {g1, g2} = blockData;
+    errorBlocks.g1 = g1.map(blk => {
+        const encodedData = blk.flat();
+        const errorPoly = genErrorCode(errorCodeware, encodedData);
+        return errorPoly.map(erP => {
+            return getPaddedQrBits(erP.aint, 8);
+        })
+    });
+
+    if (g2 !== undefined) {
+        errorBlocks.g2 = g2.map(blk => {
+            const encodedData = blk.flat();
+            const errorPoly = genErrorCode(errorCodeware, encodedData);
+            return errorPoly.map(erP => {
+                return getPaddedQrBits(erP.aint, 8);
+            })
+        });
+    }
+    return errorBlocks;
+}
+
 const polynomialDivision = (msgPoly: PolynomialWithAint[], genPoly: PolynomialWithAexp[], steps: number): PolynomialWithAint[] => {
     if (steps <= 0) return msgPoly;
+    // console.log(msgPoly)
     const leadMsgAExp = getExp(msgPoly[0].aint);
     const newGenPoly = genPoly.map(p => {
         const newAexp = (p.aexp + leadMsgAExp) > 255 ? (p.aexp + leadMsgAExp) % 255 : (p.aexp + leadMsgAExp);
@@ -336,6 +364,9 @@ const polynomialDivision = (msgPoly: PolynomialWithAint[], genPoly: PolynomialWi
     const remainderLeadAInt = remainder.shift();
 
     if (remainderLeadAInt?.aint !== 0) throw Error("Error while generating error polynomial.");
+
+    while (remainder[0].aint === 0) remainder.shift();
+
     genPoly.forEach(p => {
         p.xexp = p.xexp - 1
     })
@@ -366,7 +397,390 @@ const getGeneratorPolynomial = (errorCodeware: number, n1: PolynomialWithAexp[] 
     return getGeneratorPolynomial(errorCodeware, result, n2);
 }
 
-export const encodeQr = (value: string | null, errorLevel: QrErrorCorrection) => {
+const interleaveData = (codeGrps: QrBlocks): QrcodeBit[] => {
+    const {g1, g2} = codeGrps;
+    const codeBlocks = [...g1];
+    if (g2 !== undefined) codeBlocks.push(...g2);
+    const data: QrcodeBit[] = [];
+
+    for (let indx = 0; indx < Math.max(...codeBlocks.map(cb => cb.length)); indx++) {
+        for (const block of codeBlocks) {
+            const bitVal = block[indx];
+            if (bitVal && bitVal.length) data.push(...bitVal);
+        }
+    }
+    return data;
+}
+
+const getInterleavedData = (codeGrps: QrBlocks, errGrps: QrBlocks, version: number): QrcodeBit[] => {
+    const codeData = interleaveData(codeGrps);
+    const errorData = interleaveData(errGrps);
+
+    const remainderBitsLen = RemainderBits[version - 1];
+
+    const remainderBits: QrcodeBit[] = Array.from<QrcodeBit>({length: remainderBitsLen}).fill(0);
+
+    return [...codeData, ...errorData, ...remainderBits];
+}
+
+const getQrSize = (version: number): number => {
+    return (((version - 1) * 4) + 21);
+}
+
+const fillFinderPatternsWithSeparator = (qrMatrix: (QrcodeBit | null)[][], qrSize: number) => {
+    const patternSize = 7;
+    const startPosList: [x: number, y: number][] = [[0,0], [qrSize - patternSize, 0], [0, qrSize - patternSize]];
+    const bitPatterns: {y: number[]; bits: QrcodeBit[]}[] = [
+        {y: [0, 6], bits: [1, 1, 1, 1, 1, 1, 1]},
+        {y: [1, 5], bits: [1, 0, 0, 0, 0, 0, 1]},
+        {y: [2, 3, 4], bits: [1, 0, 1, 1, 1, 0, 1]},
+    ];
+
+    for (const startPos of startPosList) {
+        const [startx, starty] = startPos;
+        for (let y = 0; y < patternSize; y++) {
+            const yPos = starty + y;
+            const bitPattern = bitPatterns.find(bp => bp.y.includes(y))?.bits;
+            if (bitPattern === undefined) throw Error("Error while filling finder pattern.");
+            for (let x = 0; x < patternSize; x++) {
+                const xPos = startx + x;
+                const bitVal = bitPattern[x];
+                qrMatrix[yPos][xPos] = bitVal;
+
+                // separator pattern
+                if (qrMatrix[starty + 7] !== undefined) qrMatrix[starty + 7][xPos] = 0;
+                if (qrMatrix[starty - 1] !== undefined) qrMatrix[starty - 1][xPos] = 0;
+            }
+            // separator pattern
+            if (qrMatrix[yPos][startx + 7] !== undefined) qrMatrix[yPos][startx + 7] = 0;
+            if (qrMatrix[yPos][startx - 1] !== undefined) qrMatrix[yPos][startx - 1] = 0;
+        }
+    }
+
+    // separator pattern
+    qrMatrix[patternSize][patternSize] = 0;
+    qrMatrix[qrSize - patternSize - 1][patternSize] = 0;
+    qrMatrix[patternSize][qrSize - patternSize - 1] = 0;
+}
+
+const getAllAlignmentPositions = (version: number): [xPos: number, yPos: number][] => {
+    const positions = AlignmentPatternLocations[version - 1];
+    const allPositions: [xPos: number, yPos: number][] = [];
+
+    for (let i = 0; i < positions.length; i++) {
+        for (let j = i; j < positions.length; j++) {
+            const pos1 = positions[i];
+            const pos2 = positions[j];
+            allPositions.push([pos1, pos2]);
+            if (pos1 !== pos2) allPositions.push([pos2, pos1]);
+        }
+    }
+
+    return allPositions;
+}
+
+const getAllFormatInfoPos = (qrSize: number): {pos: [xPos: number, yPos: number][], start: number}[] => {
+    return [{
+        start: 0,
+        pos: [[0,8], [1,8], [2,8], [3,8], [4, 8], [5,8], [7,8], [8,8], [8,7], [8,5], [8,4], [8,3], [8,2], [8,1], [8,0]]
+    }, {
+        start: 0,
+        pos: [[8,qrSize - 1], [8,qrSize - 2], [8,qrSize - 3], [8,qrSize - 4], [8,qrSize - 5], [8,qrSize - 6], [8,qrSize - 7]]
+    }, {
+        start: 7,
+        pos: [[qrSize - 8, 8], [qrSize - 7, 8], [qrSize - 6, 8], [qrSize - 5, 8], [qrSize - 4, 8], [qrSize - 3, 8], [qrSize - 2, 8], [qrSize - 1, 8]]
+    }];
+}
+
+const getAllVersionInfoPos = (qrSize: number): {bl: [xPos: number, yPos: number][], tr: [xPos: number, yPos: number][]} => {
+    return {
+        bl: [
+            [0, qrSize - 11], [0, qrSize - 10], [0, qrSize - 9],
+            [1, qrSize - 11], [1, qrSize - 10], [1, qrSize - 9],
+            [2, qrSize - 11], [2, qrSize - 10], [2, qrSize - 9],
+            [3, qrSize - 11], [3, qrSize - 10], [3, qrSize - 9],
+            [4, qrSize - 11], [4, qrSize - 10], [4, qrSize - 9],
+            [5, qrSize - 11], [5, qrSize - 10], [5, qrSize - 9],
+        ],
+        tr: [
+            [qrSize - 11, 0], [qrSize - 10, 0], [qrSize - 9, 0],
+            [qrSize - 11, 1], [qrSize - 10, 1], [qrSize - 9, 1],
+            [qrSize - 11, 2], [qrSize - 10, 2], [qrSize - 9, 2],
+            [qrSize - 11, 3], [qrSize - 10, 3], [qrSize - 9, 3],
+            [qrSize - 11, 4], [qrSize - 10, 4], [qrSize - 9, 4],
+            [qrSize - 11, 5], [qrSize - 10, 5], [qrSize - 9, 5],
+        ]
+    };
+}
+
+const fillAlignmentPatterns = (qrMatrix: (QrcodeBit | null)[][], qrSize: number, version: number) => {
+    const allAlignmentPos = getAllAlignmentPositions(version);
+    const nonOverlapPos = allAlignmentPos.filter(pos => qrMatrix[pos[1]][pos[0]] === null);
+    const allAlignmentStartPos: [xPos: number, yPos: number][] = nonOverlapPos.map(pos => [pos[0] - 2, pos[1] - 2]);
+    
+    const patternSize = 5;
+    const bitPatterns: {y: number[]; bits: QrcodeBit[]}[] = [
+        {y: [0, 4], bits: [1, 1, 1, 1, 1]},
+        {y: [1, 3], bits: [1, 0, 0, 0, 1]},
+        {y: [2], bits: [1, 0, 1, 0, 1]},
+    ];
+
+    for (const startPos of allAlignmentStartPos) {
+        const [startx, starty] = startPos;
+        for (let y = 0; y < patternSize; y++) {
+            const yPos = starty + y;
+            const bitPattern = bitPatterns.find(bp => bp.y.includes(y))?.bits;
+            if (bitPattern === undefined) throw Error("Error while filling allignment pattern.");
+            for (let x = 0; x < patternSize; x++) {
+                const xPos = startx + x;
+                const bitVal = bitPattern[x];
+                qrMatrix[yPos][xPos] = bitVal;
+            }
+        }
+    }
+}
+
+const fillTimingPattern = (qrMatrix: (QrcodeBit | null)[][], qrSize: number) => {
+    const timingPatternLen = qrSize - (8 * 2);
+
+    for (let i = 0; i < timingPatternLen; i++) {
+        const bitVal = (i % 2 === 0) ? 1 : 0;
+        qrMatrix[6][8 + i] = bitVal;
+        qrMatrix[8 + i][6] = bitVal;
+    }
+}
+
+const fillDarkModule = (qrMatrix: (QrcodeBit | null)[][], version: number) => {
+    const darkModulePos: [xPos: number, yPos: number] = [8, (4 * version) + 9];
+    qrMatrix[darkModulePos[1]][darkModulePos[0]] = 1;
+}
+
+const fillFormatAndVersionInfo = (qrMatrix: (QrcodeBit | null)[][], qrSize: number, maskPattern: number, errorLevel: QrErrorCorrection, version: number) => {
+    const formatBits = FormatInformationTable[errorLevel][maskPattern];
+    const versionBits = version >= 7 ? VersionInformationTable[version - 7].toReversed() : null;
+    const formatInfo = getAllFormatInfoPos(qrSize);
+
+    for (const formatBlock of formatInfo) {
+        const usedFormatBits = formatBits.slice(formatBlock.start);
+        const allPos = formatBlock.pos;
+        for (const [index, pos] of allPos.entries()) {
+            qrMatrix[pos[1]][pos[0]] = usedFormatBits[index];
+        }
+    }
+
+    if (versionBits === null) return;
+    const versionInfo = getAllVersionInfoPos(qrSize);
+
+    for (const block of Object.values(versionInfo)) {
+        if (versionBits.length !== block.length) throw Error("Version info placement wrong!");
+        for (const [index, pos] of block.entries()) {
+            qrMatrix[pos[1]][pos[0]] = versionBits[index];
+        }
+    }
+}
+
+const getMasketBit = (bit: QrcodeBit, pos: [xPos: number, yPos: number], maskPattern: number): QrcodeBit => {
+    const xPos = pos[0];
+    const yPos = pos[1];
+            if (maskPattern === 0 && (yPos + xPos) % 2 === 0) return (1 ^ bit) as QrcodeBit;
+
+            if (maskPattern === 1 && (yPos) % 2 === 0) return (1 ^ bit) as QrcodeBit;
+
+            if (maskPattern === 2 && (xPos) % 3 === 0) return (1 ^ bit) as QrcodeBit;
+
+            if (maskPattern === 3 && (yPos + xPos) % 3 === 0) return (1 ^ bit) as QrcodeBit;
+
+            if (maskPattern === 4 && (Math.floor(yPos / 2) + Math.floor(xPos / 3))  % 2 === 0) return (1 ^ bit) as QrcodeBit;
+
+            if (maskPattern === 5 && ((yPos * xPos) % 2) + ((yPos * xPos) % 3) === 0) return (1 ^ bit) as QrcodeBit;
+
+            if (maskPattern === 6 && (((yPos * xPos) % 2) + ((yPos * xPos) % 3) % 2)  === 0) return (1 ^ bit) as QrcodeBit;
+
+            if (maskPattern === 7 && (((yPos + xPos) % 2) + ((yPos * xPos) % 3) % 2)  === 0) return (1 ^ bit) as QrcodeBit;
+
+    return bit;
+}
+
+const fillMessageData = (qrMatrix: (QrcodeBit | null)[][], messageBits: QrcodeBit[], qrSize: number, maskPattern: number) => {
+    let yPos = qrSize - 1;
+    let xPos = qrSize - 1;
+
+    let isUp = true;
+    let indx = 0;
+    let count = (qrSize - 1) / 2;
+    while (count > 0) {
+        if (isUp && yPos < 0) {
+            yPos = 0;
+            xPos = xPos - 2;
+            isUp = !isUp;
+            count--;
+        } 
+        if (!isUp && yPos > (qrSize - 1)) {
+            yPos = (qrSize - 1);
+            xPos = xPos - 2;
+            isUp = !isUp;
+            count--;
+        }
+        if (xPos === 6) xPos = xPos - 1;
+        if (qrMatrix[yPos][xPos] === null) {
+            const maskedBit = getMasketBit(messageBits[indx], [xPos, yPos], maskPattern);
+            qrMatrix[yPos][xPos] = maskedBit;
+            indx = indx + 1;
+        }
+        if (qrMatrix[yPos][xPos - 1] === null) {
+            const maskedBit = getMasketBit(messageBits[indx], [xPos - 1, yPos], maskPattern);
+            qrMatrix[yPos][xPos - 1] = maskedBit;
+            indx = indx + 1;
+        }
+        isUp ? yPos-- : yPos++;
+    }
+}
+
+const getMaskedQrMatrixs = (qrMatrix: (QrcodeBit | null)[][], messageBits: QrcodeBit[], qrSize: number, errorLevel: QrErrorCorrection, version: number):QrcodeBit[][][] => {
+    const qrMatrixList:(QrcodeBit | null)[][][] = [];
+    for (let maskPattern = 0; maskPattern <= 7; maskPattern++) {
+        const clonedQrMatrix: (QrcodeBit | null)[][] = JSON.parse(JSON.stringify(qrMatrix));
+        fillFormatAndVersionInfo(clonedQrMatrix, qrSize, maskPattern, errorLevel, version);
+        fillMessageData(clonedQrMatrix, messageBits, qrSize, maskPattern);
+        qrMatrixList.push(clonedQrMatrix);
+    }
+
+    return qrMatrixList as QrcodeBit[][][];
+}
+
+const calcRowPenalty1 = (row: QrcodeBit[]): number => {
+    let penalty = 0;
+    let cnt = 0;
+    let bit = row[0];
+    for (const bitVal of row) {
+        if (bit === bitVal) cnt++;
+        else {
+            if (cnt >= 5) penalty += (cnt - 2);
+            cnt = 1;
+            bit = bitVal;
+        }
+    }
+
+    if (cnt >= 5) penalty += (cnt - 2);
+
+    return penalty;
+}
+
+const calcPenalty1 = (qrMatrix: QrcodeBit[][], qrSize: number): number => {
+    let penalty = 0;
+    
+    for (let i = 0; i < qrSize; i++) {
+        const row = qrMatrix[i];
+        const column = qrMatrix.map(rw => rw[i]);
+        penalty += (calcRowPenalty1(row) + calcRowPenalty1(column));
+    }
+
+    return penalty;
+}
+
+const calcPenalty2 = (qrMatrix: QrcodeBit[][], qrSize: number): number => {
+    let penalty = 0;
+    for (let i = 0; i < qrSize - 1; i++) {
+        for (let j = 0; j < qrSize - 1; j++) {
+            let sum = qrMatrix[i][j] + qrMatrix[i][j + 1] + qrMatrix[i + 1][j] + qrMatrix[i + 1][j + 1];
+            if (sum === 0 || sum === 4) penalty += 3; 
+        }
+    }
+    return penalty;
+}
+
+const calcRowPenalty3 = (row: QrcodeBit[]): number => {
+    let penalty = 0;
+    let bit = row[0];
+    const chk1 = '10111010000';
+    const chk2 = '00001011101';
+    const rowStr = row.join("");
+
+    for (let i = 0; i <= rowStr.length - chk1.length; i++) {
+        const subRow = rowStr.slice(i, i + chk1.length);
+        if (chk1 === subRow || chk2 === subRow) penalty += 40;
+    }
+
+    return penalty;
+}
+
+const calcPenalty3 = (qrMatrix: QrcodeBit[][], qrSize: number): number => {
+    let penalty = 0;
+    
+    for (let i = 0; i < qrSize; i++) {
+        const row = qrMatrix[i];
+        const column = qrMatrix.map(rw => rw[i]);
+        penalty += (calcRowPenalty3(row) + calcRowPenalty3(column));
+    }
+
+    return penalty;
+}
+
+const calcPenalty4 = (qrMatrix: QrcodeBit[][]): number => {
+    const bits = qrMatrix.flat();
+    const totalCell = bits.length;
+    const totalDarkCell = bits.filter(bt => bt === 0).length;
+    const darkPrecentage = (totalDarkCell / totalCell) * 100;
+    const mul5nearest = [Math.floor(darkPrecentage / 5) * 5, (Math.floor(darkPrecentage / 5) + 1) * 5];
+    const sub50Vals = mul5nearest.map(num => Math.abs(num - 50));
+    const div5Vals = sub50Vals.map(num => num / 5);
+    return Math.min(...div5Vals) * 10;
+}
+
+const calcPenalty = (qrMatrix: QrcodeBit[][], qrSize: number): number => {
+    return calcPenalty1(qrMatrix, qrSize) + calcPenalty2(qrMatrix, qrSize) + calcPenalty3(qrMatrix, qrSize) + calcPenalty4(qrMatrix);
+}
+
+const getQrMatrix = (encodedData: QrcodeBit[], version: number, errorLevel: QrErrorCorrection, messageBits: QrcodeBit[]): QrcodeBit[][] => {
+    const qrSize = getQrSize(version);
+    const qrMatrix: (QrcodeBit | null)[][] = [];
+
+    for (let i = 0; i < qrSize; i++) {
+        const jData = [];
+        for (let j = 0; j < qrSize; j++) {
+            jData.push(null);
+        }
+        qrMatrix.push(jData);
+    }
+    
+    fillFinderPatternsWithSeparator(qrMatrix, qrSize);
+    fillAlignmentPatterns(qrMatrix, qrSize, version);
+    fillTimingPattern(qrMatrix, qrSize);
+    fillDarkModule(qrMatrix, version);
+
+    const maskedMatrix = getMaskedQrMatrixs(qrMatrix, messageBits, qrSize, errorLevel, version);
+    const penaltyScores = [];
+    for (let mask = 0; mask <= 7; mask++) {
+        penaltyScores.push(calcPenalty(maskedMatrix[mask], qrSize));
+    }
+    const minPenalty = Math.min(...penaltyScores);
+    const minPenaltyMask = penaltyScores.indexOf(minPenalty);
+
+    return maskedMatrix[minPenaltyMask];
+}
+
+const addPaddings = (encodedData: QrcodeBit[],dataCapacity: number) => {
+    if (!dataCapacity) throw Error("total bit required lendth not correct, check error-correct-level and version.");
+    const reqTotalBitLen = dataCapacity * 8;
+    if (encodedData.length > reqTotalBitLen) throw Error("");
+
+    const terminatorCount = (reqTotalBitLen - encodedData.length) < 4 ? (reqTotalBitLen - encodedData.length) : 4;
+    const terminatorBits: QrcodeBit[] = Array(terminatorCount).fill(0);
+    encodedData.push(...terminatorBits);
+
+    const remainder = (encodedData.length % 8) === 0 ? 0 : 8 - (encodedData.length % 8)
+    const paddedBits: QrcodeBit[] = Array(remainder).fill(0);
+    encodedData.push(...paddedBits);
+
+    const padBytes: QrcodeBit[][] = [[1,1,1,0,1,1,0,0], [0,0,0,1,0,0,0,1]];
+    let indx = 0;
+    while (encodedData.length < reqTotalBitLen) {
+        encodedData.push(...padBytes[indx % 2]);
+        indx++;
+    }
+}
+
+export const encodeQr = (value: string | null, errorLevel: QrErrorCorrection): QrcodeBit[][] => {
     try {
         if (!value) throw Error("Value must be present.");
         const encodeMode = getQrEncodingMode(value);
@@ -397,28 +811,17 @@ export const encodeQr = (value: string | null, errorLevel: QrErrorCorrection) =>
         }
 
         const {dataCapacity, errorPerBlock, g1Blocks, g1BlockCapacity, g2Blocks, g2BlockCapacity} = ErrorCorrectionCodeTable[errorLevel][version - 1];
-        if (!dataCapacity) throw Error("total bit required lendth not correct, check error-correct-level and version.");
-        const reqTotalBitLen = dataCapacity * 8;
-        if (encodedData.length > reqTotalBitLen) throw Error("");
+        
+        addPaddings(encodedData, dataCapacity);
 
-        const terminatorCount = (reqTotalBitLen - encodedData.length) < 4 ? (reqTotalBitLen - encodedData.length) : 4;
-        const terminatorBits: QrcodeBit[] = Array(terminatorCount).fill(0);
-        encodedData.push(...terminatorBits);
+        const codeBlocks = transformBitsToBlocks(encodedData, g1Blocks, g1BlockCapacity, g2Blocks, g2BlockCapacity);
+        const errorBlocks = getErrorCodeBlocks(errorPerBlock, codeBlocks);
 
-        const remainder = (encodedData.length % 8) === 0 ? 0 : 8 - (encodedData.length % 8)
-        const paddedBits: QrcodeBit[] = Array(remainder).fill(0);
-        encodedData.push(...paddedBits);
+        const finalEncodedData = getInterleavedData(codeBlocks, errorBlocks, version);
 
-        const padBytes: QrcodeBit[][] = [[1,1,1,0,1,1,0,0], [0,0,0,1,0,0,0,1]];
-        let indx = 0;
-        while (encodedData.length < reqTotalBitLen) {
-            encodedData.push(...padBytes[indx % 2]);
-            indx++;
-        }
+        const finalQrMatrix = getQrMatrix(finalEncodedData, version, errorLevel, finalEncodedData);
 
-        transformBitsToBlocks(encodedData, g1Blocks, g1BlockCapacity, g2Blocks, g2BlockCapacity);
-
-        const errorPoly = genErrorCode(errorPerBlock, encodedData);
+        return finalQrMatrix;
     } catch (e) {
         throw e;
     }
