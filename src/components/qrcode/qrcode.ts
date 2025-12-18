@@ -65,7 +65,7 @@ class Qrcode extends HTMLElement {
         if (this.svgElm === null || bitMatrix.length <= 0) return;
 
         const totalWidth = 300;
-        const totalHeight = totalWidth;
+        // const totalHeight = totalWidth;
 
         const qrcodeWidth = totalWidth - xTotalPadding;
 
@@ -93,7 +93,8 @@ class Qrcode extends HTMLElement {
                 rectElm.setAttribute("width", `${rectWidth}`);
                 rectElm.setAttribute("height", `${rectHeight}`);
 
-                rectElm.setAttribute("fill", bitModule > 0 ? module1Color : bitModule < 0 ? 'blue' : module0Color);
+                rectElm.setAttribute("fill", bitModule > 0 ? module1Color : module0Color);
+                rectElm.setAttribute("stroke", bitModule > 0 ? module1Color : module0Color);
                 if (bitModule === null) rectElm.setAttribute("fill", "grey");
 
                 this.svgElm.appendChild(rectElm);

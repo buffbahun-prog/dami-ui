@@ -341,7 +341,6 @@ const getErrorCodeBlocks = (errorCodeware: number, blockData: QrBlocks): QrBlock
 
 const polynomialDivision = (msgPoly: PolynomialWithAint[], genPoly: PolynomialWithAexp[], steps: number): PolynomialWithAint[] => {
     if (steps <= 0) return msgPoly;
-    // console.log(msgPoly)
     const leadMsgAExp = getExp(msgPoly[0].aint);
     const newGenPoly = genPoly.map(p => {
         const newAexp = (p.aexp + leadMsgAExp) > 255 ? (p.aexp + leadMsgAExp) % 255 : (p.aexp + leadMsgAExp);
@@ -590,13 +589,13 @@ const getMasketBit = (bit: QrcodeBit, pos: [xPos: number, yPos: number], maskPat
 
             if (maskPattern === 3 && (yPos + xPos) % 3 === 0) return (1 ^ bit) as QrcodeBit;
 
-            if (maskPattern === 4 && (Math.floor(yPos / 2) + Math.floor(xPos / 3))  % 2 === 0) return (1 ^ bit) as QrcodeBit;
+            if (maskPattern === 4 && ((Math.floor(yPos / 2) + Math.floor(xPos / 3))  % 2) === 0) return (1 ^ bit) as QrcodeBit;
 
-            if (maskPattern === 5 && ((yPos * xPos) % 2) + ((yPos * xPos) % 3) === 0) return (1 ^ bit) as QrcodeBit;
+            if (maskPattern === 5 && (((yPos * xPos) % 2) + ((yPos * xPos) % 3)) === 0) return (1 ^ bit) as QrcodeBit;
 
-            if (maskPattern === 6 && (((yPos * xPos) % 2) + ((yPos * xPos) % 3) % 2)  === 0) return (1 ^ bit) as QrcodeBit;
+            if (maskPattern === 6 && ((((yPos * xPos) % 2) + ((yPos * xPos) % 3)) % 2)  === 0) return (1 ^ bit) as QrcodeBit;
 
-            if (maskPattern === 7 && (((yPos + xPos) % 2) + ((yPos * xPos) % 3) % 2)  === 0) return (1 ^ bit) as QrcodeBit;
+            if (maskPattern === 7 && ((((yPos + xPos) % 2) + ((yPos * xPos) % 3)) % 2)  === 0) return (1 ^ bit) as QrcodeBit;
 
     return bit;
 }
@@ -825,4 +824,12 @@ export const encodeQr = (value: string | null, errorLevel: QrErrorCorrection): Q
     } catch (e) {
         throw e;
     }
+}
+
+export const getDifIndexList = (ary1: string, ary2: string): number[] => {
+    const indxList = [];
+    for (let indx = 0; indx < ary1.length; indx++) {
+        if (ary1[indx] !== ary2[indx]) indxList.push(indx);
+    }
+    return indxList;
 }
