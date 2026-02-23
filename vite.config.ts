@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 
 export default defineConfig({
+  base: '/dami-ui/',
   server: {
     port: 5173,
     open: true
