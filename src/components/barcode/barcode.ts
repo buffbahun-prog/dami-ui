@@ -46,7 +46,8 @@ class Barcode extends HTMLElement {
             const barcodeBitAry = this.getBarcodeBits();
             const value = this.getAttribute("value") ?? '';
             this.drawBarcode(...barcodeBitAry, value);
-        } catch (e) {
+        } catch (e: any) {
+            this.drawBarcode([],[],[], e.message, true);
             throw e;
         }
     }
@@ -146,8 +147,16 @@ class Barcode extends HTMLElement {
         }
     }
 
-    drawBarcode(bitAry: BarcodeBit[], longTailPos: number[] = [], postnetLongPos: number[] = [], displayText: string) {
-        if (this.svgElm === null || bitAry.length <= 0) return;
+    drawBarcode(bitAry: BarcodeBit[], longTailPos: number[] = [], postnetLongPos: number[] = [], displayText: string, isErr?: boolean) {
+        if (this.svgElm === null) return;
+
+        this.svgElm.innerHTML = "";
+
+        if (isErr) {
+            this.svgElm.style.borderColor = "red";
+        } else {
+            this.svgElm.style.borderColor = "black";
+        }
 
         const totalWidth = 300;
         const totalHeight = 150;
@@ -199,6 +208,11 @@ class Barcode extends HTMLElement {
         const textYPos = startY + barcodeHeight + longTailExtraHeight + textTopMargin;
         textElm.setAttribute("x", `${textXPos}`);
         textElm.setAttribute("y", `${textYPos}`);
+        if (isErr) {
+            textElm.setAttribute("fill", "red");
+            textElm.setAttribute("x", `${textXPos}`);
+            textElm.setAttribute("y", `${totalHeight / 2}`);
+        }
     }
 }
 

@@ -14,6 +14,6 @@ export enum QrErrorCorrection {
 }
 
 export interface IQrcodeAttr {
-    errorCorrection: QrErrorCorrection | null;
+    errorcorrection: QrErrorCorrection | null;
     value: string | null;
 }

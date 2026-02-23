@@ -4,9 +4,37 @@
     <meta charset="UTF-8" />
     <title>My Web Components</title>
     <script type="module" src="/src/index.ts"></script>
+    <style>
+      .qr {
+        max-width: 300px;
+      }
+
+      .qr-inp {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        justify-content: start;
+      }
+
+      .qr-inp > div {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .qr-inp > div input, select {
+        padding: 2px 5px;
+        width: fit-content;
+      }
+
+      .main-cont {
+        display: flex;
+        flex-direction: column;
+        gap: 20px;
+      }
+    </style>
   </head>
   <body style="font-family: sans-serif; padding: 2rem;">
-    <h1>My Web Components Library</h1>
+    <h1>My Web Components Library (Qrcode and Barcode)</h1>
 
     <!-- <dami-barcode type value="123456733456"></dami-barcode> -->
     <!-- <dami-barcode type="ean8" value="9234567"></dami-barcode> -->
@@ -21,13 +49,93 @@
     <!-- <dami-barcode type="GS1-128" value="(01)12349876457490"></dami-barcode> -->
     <!-- <dami-barcode type="MSImod11" value="1234567"></dami-barcode> -->
     <!-- <dami-barcode type="postnet" value="12345678995"></dami-barcode> -->
-    <dami-qrcode value="Ashish Don!" errorCorrection="L"></dami-qrcode>
-    <!-- <dami-qrcode value="https://www.instagram.com/the__prathamsapkota/" errorCorrection="L"></dami-qrcode> -->
+    <div class="main-cont">
+      <div class="qr-main">
+        <div class="qr">
+          <!-- <dami-qrcode id="qr" value="असिम सापकोटा" errorcorrection="L"></dami-qrcode> -->
+          <dami-qrcode id="qr" value="" errorcorrection="L"></dami-qrcode>
+        </div>
+        <div class="qr-inp">
+          <div>
+            <label for="errorcr">Error Level</label>
+            <select name="" id="errorcr">
+              <option value="L">L</option>
+              <option value="M">M</option>
+              <option value="Q">Q</option>
+              <option value="H">H</option>
+            </select>
+          </div>
+          <div>
+            <label for="qrdata">Text</label>
+            <input type="text" id="qrdata">
+          </div>
+        </div>
+      </div>
+  
+      <div class="qr-main">
+        <div class="qr">
+          <dami-barcode id="brcd" type value></dami-barcode>
+        </div>
+        <div class="qr-inp">
+          <div>
+            <label for="brtype">Error Level</label>
+            <select name="" id="brtype">
+              <option value="ean8">ean8</option>
+              <option value="upca">upca</option>
+              <option value="upce">upce</option>
+              <option value="code11">code11</option>
+              <option value="code39">code39</option>
+              <option value="code39Extended">code39Extended</option>
+              <option value="code93">code93</option>
+              <option value="code93Extended">code93Extended</option>
+              <option value="code128">code128</option>
+              <option value="GS1-128">GS1-128</option>
+              <option value="MSImod11">MSImod11</option>
+              <option value="postnet">postnet</option>
+            </select>
+          </div>
+          <div>
+            <label for="brdata">Text</label>
+            <input type="text" id="brdata">
+          </div>
+        </div>
+      </div>
+    </div>
 
     <script>
-      document.addEventListener('myclick', () => {
-        alert('Button clicked!');
+      const errSelect = document.getElementById("errorcr");
+      const qrInput = document.getElementById("qrdata");
+      const qr = document.getElementById("qr");
+
+      errSelect.addEventListener("change", (evt) => {
+        const errVal = evt.target.value;
+        qr.setAttribute("errorcorrection", errVal);
       });
+
+      qrInput.addEventListener("input", (evt) => {
+        const dataVal = evt.target.value;
+        if (!dataVal) {
+          // qr.style.visibility = "hidden";
+        }
+        qr.setAttribute("value", dataVal);
+      });
+
+      const typeSelec = document.getElementById("brtype");
+      const brInput = document.getElementById("brdata");
+      const br = document.getElementById("brcd");
+
+      typeSelec.addEventListener("change", (evt) => {
+        const typeVal = evt.target.value;
+        br.setAttribute("type", typeVal);
+      });
+
+      brInput.addEventListener("input", (evt) => {
+        const dataVal = evt.target.value;
+        if (!dataVal) {
+          // qr.style.visibility = "hidden";
+        }
+        br.setAttribute("value", dataVal);
+      })
     </script>
   </body>
 </html>

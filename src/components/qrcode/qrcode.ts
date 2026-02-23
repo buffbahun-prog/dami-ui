@@ -18,7 +18,7 @@ const xTotalPadding = 64;
 const yTotalPadding = xTotalPadding;
 
 class Qrcode extends HTMLElement {
-    static observedAttributes: (keyof IQrcodeAttr)[] = ["errorCorrection", "value"];
+    static observedAttributes: (keyof IQrcodeAttr)[] = ["errorcorrection", "value"];
     svgElm: SVGSVGElement | null;
     constructor() {
         super();
@@ -45,14 +45,15 @@ class Qrcode extends HTMLElement {
         try {
             const qrCodeBitMatrix = this.getQrcodeBits();
             this.drawQrcode(qrCodeBitMatrix);
-        } catch (e) {
+        } catch (e: any) {
+            this.drawQrcode([], e.message);
             throw e;
         }
     }
 
     getQrcodeBits(): QrcodeBit[][] {
         try {
-            const errorCorrection = (this.getAttribute("errorCorrection") || null) as IQrcodeAttr["errorCorrection"];
+            const errorCorrection = (this.getAttribute("errorcorrection") || null) as IQrcodeAttr["errorcorrection"];
             const value: IQrcodeAttr["value"] = this.getAttribute("value") || null;
             
             return encodeQr(value, errorCorrection ?? QrErrorCorrection.M);
@@ -61,11 +62,25 @@ class Qrcode extends HTMLElement {
         }
     }
 
-    drawQrcode(bitMatrix: QrcodeBit[][]) {
-        if (this.svgElm === null || bitMatrix.length <= 0) return;
+    drawQrcode(bitMatrix: QrcodeBit[][], errMessage?: string) {
+        if (this.svgElm === null) return;
 
         const totalWidth = 300;
-        // const totalHeight = totalWidth;
+        this.svgElm.innerHTML = "";
+
+        if (errMessage) {
+            const textNode = document.createElementNS(svgns, "text");
+            textNode.textContent = errMessage;
+            textNode.setAttribute("textLength", `${totalWidth - xTotalPadding}`);
+            textNode.setAttribute("lengthAdjust", "spacingAndGlyphs");
+            textNode.setAttribute("x", `${xTotalPadding / 2}`);
+            textNode.setAttribute("y", `${totalWidth / 2}`);
+            textNode.setAttribute("fill", "red");
+            this.svgElm.appendChild(textNode);
+            this.svgElm.style.borderColor = "red";
+        } else {
+            this.svgElm.style.borderColor = "black";
+        }
 
         const qrcodeWidth = totalWidth - xTotalPadding;
 
